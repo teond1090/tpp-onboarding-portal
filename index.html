@@ -265,6 +265,84 @@ footer a{color:#cdd6e6}
   .card{padding:18px}
   .faq .ans{padding-left:21px}
 }
+/* ---------- Meredith chat assistant ---------- */
+.m-fab{position:fixed;right:22px;bottom:22px;z-index:2147482000;display:flex;align-items:center;gap:11px;
+  background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 19px 9px 9px;cursor:pointer;
+  box-shadow:0 6px 22px rgba(20,30,50,.18);font-family:inherit;
+  transition:transform .16s,box-shadow .16s}
+.m-fab:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(20,30,50,.24)}
+.m-fab-av{width:40px;height:40px;flex:none}
+.m-fab-av svg{width:40px;height:40px;display:block}
+.m-fab-t{text-align:left;line-height:1.2}
+.m-fab-t b{display:block;color:var(--navy);font-size:14.5px;font-weight:800}
+.m-fab-t i{display:block;color:var(--muted);font-size:11.5px;font-style:normal;font-weight:600}
+
+.m-panel{position:fixed;right:22px;bottom:22px;z-index:2147483000;width:394px;max-width:calc(100vw - 32px);
+  height:min(620px,calc(100vh - 40px));background:#fff;border:1px solid var(--line);border-radius:18px;
+  box-shadow:0 20px 60px rgba(15,22,40,.30);display:none;flex-direction:column;overflow:hidden}
+.m-panel.on{display:flex;animation:mIn .2s ease}
+@keyframes mIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+
+.m-head{display:flex;align-items:center;gap:12px;padding:14px 16px;
+  background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;flex:none}
+.m-head-av{position:relative;width:38px;height:38px;flex:none}
+.m-head-av svg{width:38px;height:38px;display:block}
+.m-dot{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;
+  background:#33d17a;border:2px solid var(--navy)}
+.m-head-t{flex:1;min-width:0;line-height:1.25}
+.m-head-t b{display:block;font-size:16px;font-weight:800}
+.m-head-t span{display:block;font-size:11.5px;color:#b8c4d8;font-weight:600}
+.m-x{background:rgba(255,255,255,.12);border:none;color:#fff;width:32px;height:32px;border-radius:8px;
+  cursor:pointer;display:grid;place-items:center;flex:none}
+.m-x:hover{background:rgba(255,255,255,.24)}
+.m-x svg{width:16px;height:16px}
+
+.m-log{flex:1;overflow-y:auto;padding:18px 16px 6px;background:#f7f9fc;
+  scrollbar-width:thin;overscroll-behavior:contain}
+.m-msg{display:flex;gap:9px;margin-bottom:14px;align-items:flex-end}
+.m-msg.you{justify-content:flex-end}
+.m-av{width:27px;height:27px;flex:none}
+.m-av svg{width:27px;height:27px;display:block}
+.m-b{max-width:80%;padding:11px 14px;border-radius:15px;font-size:14.3px;line-height:1.55;
+  overflow-wrap:anywhere}
+.m-msg.her .m-b{background:#fff;border:1px solid var(--line);border-bottom-left-radius:5px;color:var(--ink);
+  box-shadow:0 1px 2px rgba(20,30,50,.05)}
+.m-msg.you .m-b{background:var(--navy);color:#fff;border-bottom-right-radius:5px}
+.m-msg.her .m-b a{color:var(--red);font-weight:600}
+.m-msg.her .m-b b{color:var(--navy)}
+
+.m-typing .m-b{display:flex;gap:4px;padding:14px}
+.m-typing i{width:6px;height:6px;border-radius:50%;background:#b3bdcc;animation:mBounce 1.1s infinite}
+.m-typing i:nth-child(2){animation-delay:.16s}
+.m-typing i:nth-child(3){animation-delay:.32s}
+@keyframes mBounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-5px);opacity:1}}
+
+.m-chips{display:flex;flex-wrap:wrap;gap:7px;padding:0 16px 12px;background:#f7f9fc;flex:none}
+.m-chip{background:#fff;border:1px solid #d5dde8;color:var(--navy);font-weight:600;font-size:12.8px;
+  padding:8px 13px;border-radius:999px;cursor:pointer;font-family:inherit;text-align:left;
+  transition:background .13s,border-color .13s}
+.m-chip:hover{background:#eef3fa;border-color:#b9c7da}
+
+.m-in{display:flex;gap:9px;padding:12px 14px;border-top:1px solid var(--line);background:#fff;flex:none}
+.m-in input{flex:1;min-width:0;border:1px solid var(--line);border-radius:11px;padding:12px 14px;
+  font-size:14.5px;font-family:inherit;color:var(--ink);background:#fbfcfe}
+.m-in input:focus{outline:none;border-color:var(--navy);background:#fff}
+.m-in button{background:var(--red);border:none;color:#fff;width:44px;height:44px;border-radius:11px;
+  cursor:pointer;display:grid;place-items:center;flex:none}
+.m-in button:hover{background:var(--red-dark)}
+.m-in button svg{width:19px;height:19px}
+
+.m-foot{padding:9px 16px 12px;font-size:11px;color:var(--muted);background:#fff;text-align:center;
+  border-top:1px solid #f0f2f6;flex:none;line-height:1.45}
+.m-foot a{color:var(--red);font-weight:600}
+
+@media(max-width:520px){
+  .m-fab{right:14px;bottom:14px;padding:8px 15px 8px 8px}
+  .m-fab-t b{font-size:13.5px}
+  .m-panel{right:0;bottom:0;width:100vw;max-width:100vw;height:100dvh;border-radius:0;border:none}
+}
+@media print{ .m-fab,.m-panel{display:none!important} }
+
 @media print{ header,nav,footer,.btnrow{display:none} .page{display:block!important} }
 </style>
 </head>
@@ -453,23 +531,12 @@ footer a{color:#cdd6e6}
      Watch the one that matches your program — or all three if you offer more than one.
      Each ends with a printable completion certificate.</p>
 
-  <div class="sect">
-    <div class="prog">
-      <div class="txt">
-        <h3>Your progress</h3>
-        <p id="progtxt">Tick each course as your team finishes it.</p>
-      </div>
-      <div class="bar"><i id="bar"></i></div>
-      <div class="pct" id="pct">0%</div>
-    </div>
-  </div>
-
   <div class="notice" style="margin-top:22px">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".9" fill="currentColor"/></svg>
     <p>Each course opens in a new tab. You can pause, rewind and fast-forward freely — the video simply
-       stops at each knowledge check until it&rsquo;s answered. <b>Progress ticks are saved on this device only</b>,
-       as a convenience for you; they aren&rsquo;t reported back to us. The certificate at the end of each course
-       is your record of completion.</p>
+       stops at each knowledge check until it&rsquo;s answered. At the end, each person gets a printable
+       <b>completion certificate</b> &mdash; and a one-click button to report their completion to us,
+       so your training record builds itself.</p>
   </div>
 
   <div class="sect grid" id="vids" style="gap:22px"></div>
@@ -741,9 +808,6 @@ $('#vids').innerHTML = VIDEOS.map((v,i) => `
     </div>
     <div class="vfoot">
       <a class="btn" href="${v.url}" target="_blank" rel="noopener">${ICON_PLAY}Open training</a>
-      <label class="chk" data-id="${v.id}">
-        <input type="checkbox" data-id="${v.id}"><span>Mark as complete</span>
-      </label>
     </div>
   </article>`).join('');
 
@@ -826,33 +890,6 @@ $('#faqs').innerHTML = FAQS.map((f,i) => `
 
 $('#yr').textContent = new Date().getFullYear();
 
-/* ===================== progress ===================== */
-const KEY = 'tpp_portal_progress_v1';
-function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ return {}; } }
-function save(o){ try { localStorage.setItem(KEY, JSON.stringify(o)); } catch(e){} }
-function paint(){
-  const st = load();
-  let n = 0;
-  document.querySelectorAll('#vids input[type=checkbox]').forEach(cb => {
-    cb.checked = !!st[cb.dataset.id];
-    cb.closest('.chk').classList.toggle('done', cb.checked);
-    cb.closest('.chk').querySelector('span').textContent = cb.checked ? 'Completed' : 'Mark as complete';
-    if (cb.checked) n++;
-  });
-  const pct = Math.round(n / VIDEOS.length * 100);
-  $('#bar').style.width = pct + '%';
-  $('#pct').textContent = pct + '%';
-  $('#progtxt').textContent = n === 0 ? 'Tick each course as your team finishes it.'
-    : n === VIDEOS.length ? 'All courses complete — nice work.'
-    : n + ' of ' + VIDEOS.length + ' courses marked complete.';
-}
-document.addEventListener('change', e => {
-  if (e.target.matches('#vids input[type=checkbox]')) {
-    const st = load(); st[e.target.dataset.id] = e.target.checked; save(st); paint();
-  }
-});
-paint();
-
 /* ===================== navigation ===================== */
 const PAGES = ['home','videos','documents','faq','support'];
 function show(p, push){
@@ -878,6 +915,417 @@ document.getElementById('menubtn').addEventListener('click', function(){
   this.setAttribute('aria-expanded', open ? 'true' : 'false');
 });
 show((location.hash||'#home').slice(1), false);
+
+/* ===================== Meredith ===================== */
+/* =====================================================================
+   MEREDITH — TPP customer assistant
+   A curated knowledge base plus an intent matcher. No external service,
+   no API key, no data leaves the page. Every answer below is written from
+   TPP's own program terms and the manager training courses.
+
+   To teach Meredith something new: add an entry to KB.
+     id    – unique slug
+     k     – keywords/phrases that should match (weighted: exact phrase > word)
+     a     – the answer (HTML allowed)
+     chips – ids of sensible follow-up questions
+   ===================================================================== */
+const MEREDITH = {
+  intro: "Hi, I'm Meredith — I help TPP customers with anything about our protection " +
+         "programs, claims, documents and training. Ask me anything, or start with one of these:",
+  openers: ['what-is-tpp','programs','pricing','file-claim','training-first','letters'],
+
+  KB: [
+  /* ---------- who we are ---------- */
+  { id:'what-is-tpp', t:'What is Tenant Property Protection?',
+    k:['what is tpp','who are you','who is tpp','about tpp','tenant property protection','what do you do','company'],
+    a:"Tenant Property Protection has been protecting tenants' belongings since <b>2009</b> — American owned and operated, built by storage veterans with 75+ years of combined experience.<br><br>We provide protection plans your tenants enrol in through their lease. We handle the paperwork, the tenant letters and every claim, so your team doesn't have to.",
+    chips:['not-insurance','programs','why-tpp'] },
+
+  { id:'not-insurance', t:'Is this insurance?',
+    k:['is this insurance','insurance','not insurance','regulated','department of insurance','licence','license','heckard'],
+    a:"<b>No — and this wording matters.</b> A protection plan is not insurance and isn't regulated by the Department of Insurance. That was settled by the California Supreme Court in <i>Heckard v. A-1 Self Storage</i>.<br><br>Please never describe it as insurance to a tenant. Always say <b>protection plan</b>.",
+    chips:['why-tpp','programs','training-first'] },
+
+  { id:'why-tpp', t:'Why do tenants need it?',
+    k:['why do tenants need','why need','why bother','already covered','have homeowners','have renters','their own insurance','coverage gap','do they need'],
+    a:"Because most tenants aren't as covered as they think.<br><br>&bull; Roughly <b>two-thirds of self-storage tenants have no homeowners policy at all</b><br>&bull; Of those who do, many policies limit property stored off-premises to <b>10–50%</b> of their contents limit — and some exclude it outright<br>&bull; A homeowners claim is settled at depreciated value, after a deductible, and can raise their premium for years<br><br>Our plans pay <b>replacement cost with no deductible</b>.",
+    chips:['dec-page','not-insurance','pricing'] },
+
+  { id:'dec-page', t:'A tenant showed me a declaration page',
+    k:['declaration page','dec page','proof of insurance','their policy','homeowners policy','renters policy','proof of coverage'],
+    a:"Read it carefully before you accept it. Look specifically for the <b>off-premises personal property</b> line.<br><br>Many policies cap that at 10–50% of the contents limit, and some exclude stored property completely. If you spot that exclusion, tell the tenant — their belongings in your building may not be covered at all, and they'd want to know before something happens.",
+    chips:['why-tpp','not-insurance','addendum'] },
+
+  /* ---------- programs ---------- */
+  { id:'programs', t:'What programs do you offer?',
+    k:['what programs','which programs','what plans','programs','plans available','products','what do you offer','three programs'],
+    a:"Three, each built for a different kind of storage:<br><br>&bull; <b>TPP Secure</b> — traditional self-storage units<br>&bull; <b>Portable Container Protection</b> — portable/mobile containers, covering storage, transit <i>and</i> on-site placement<br>&bull; <b>RV Park 'n' Protect</b> — RVs, campers, trailers, boats and vehicles in your spaces<br><br>Which one would you like to know more about?",
+    chips:['secure','portable','rv'] },
+
+  { id:'secure', t:'Tell me about TPP Secure',
+    k:['tpp secure','secure','self storage plan','storage unit plan','secure program'],
+    a:"<b>TPP Secure</b> is our self-storage protection plan. Covered losses are settled at <b>full replacement cost with no deductible</b> — no depreciation, unlike a homeowners policy.<br><br>Example plan levels are $2,000, $3,000 and $5,000, and coverage and pricing are flexible. Plans of $5,000 and above need a short inventory through BirdsEye.",
+    chips:['secure-covered','pricing','birdseye'] },
+
+  { id:'portable', t:'Tell me about Portable Container Protection',
+    k:['portable container','portable','container protection','mobile container','moving container','pods'],
+    a:"<b>Portable Container Protection</b> covers the container through all <b>three phases on one fee</b> — while it's in storage, while it's <b>in transit</b>, and while it's placed on-site at the customer's location. That transit piece is what makes it different from a standard storage plan.<br><br>It also includes a container waiver, and it's backed by Chubb.",
+    chips:['portable-covered','pricing','claim-docs'] },
+
+  { id:'rv', t:"Tell me about RV Park 'n' Protect",
+    k:["rv park","rv","park n protect","parknprotect",'camper','trailer','boat','motorhome','vehicle plan'],
+    a:"<b>RV Park 'n' Protect</b> covers whatever is in the space — RVs, campers, trailers, boats, cars and trucks, indoors or out, covered or uncovered.<br><br>Here's the gap it fills: these vehicles are driven roughly <b>42 days a year</b>, so more than half of owners drop collision and comprehensive for the off season. A minor on-site bump then comes straight out of their pocket. For about the price of a coffee a week, we cover it.",
+    chips:['rv-covered','rv-second-vehicle','rv-contents'] },
+
+  /* ---------- pricing ---------- */
+  { id:'pricing', t:'How much does it cost?',
+    k:['how much does it cost','cost','price','pricing','rates','fee','monthly fee','what are the rates','premium','how much is it','plan levels','tiers'],
+    a:"Here are <b>example</b> levels — think of these as a starting point, not a fixed rate card:<br><br>&bull; <b>TPP Secure</b> — $2,000 / $3,000 / $5,000 of coverage<br>&bull; <b>RV Park 'n' Protect</b> — $1,000 / $1,500 / $2,500, with contents cover from $350<br><br><b>Our coverage levels and pricing are flexible and we can accommodate most customer needs and requests.</b> If what you need looks different from the above, just ask Teon — that's a normal conversation, not an exception.",
+    chips:['billing','how-to-offer','contact'] },
+
+  { id:'billing', t:'How is it billed?',
+    k:['how is it billed','billing','invoice','pay','payment','billed with rent','collect','when do i pay','charge'],
+    a:"It's billed <b>with the tenant's rent</b> — no second payment for them to remember — and the plan ends automatically when they move out.<br><br>On your side it's one monthly cycle: you send us the prior month's enrolment report by the <b>5th</b>, and that month's invoice is paid by the <b>15th</b>.",
+    chips:['reporting','pricing','contact'] },
+
+  { id:'how-to-offer', t:'How do I offer this to a tenant?',
+    k:['how do i offer','how to sell','how to present','pitch','sales','offer it','bring it up','how do i explain','objection'],
+    a:"Ask <b>which</b>, not <b>whether</b>.<br><br>\"Would you like a protection plan?\" invites a no. \"Which level of protection would you like?\" moves the conversation forward. Naming the middle option first leaves you room to go either direction.<br><br>And frame it daily — nobody argues about 50 cents a day, but they'll argue about $15 a month. Same number, completely different conversation. You're not selling; you're explaining a gap they probably don't know they have.",
+    chips:['why-tpp','pricing','training-first'] },
+
+  /* ---------- coverage ---------- */
+  { id:'secure-covered', t:"What does TPP Secure cover?",
+    k:['what does secure cover','secure covered','storage covered','what is covered','covered perils','what does it cover'],
+    a:"Covered losses are paid at <b>replacement cost, no deductible</b>. Fire, smoke and explosion, burglary, vandalism, water damage from plumbing, windstorm, building collapse, and rodent damage up to a <b>$500 sublimit</b>.<br><br>Want the exclusions? Those matter just as much.",
+    chips:['secure-excluded','file-claim','birdseye'] },
+
+  { id:'secure-excluded', t:"What isn't covered under TPP Secure?",
+    k:['not covered secure','secure exclusions','secure excluded','storage exclusions','excluded','exclusions','what is not covered','flood','mold','mysterious disappearance'],
+    a:"The main exclusions:<br><br>&bull; <b>Flood</b> — only available through the National Flood Insurance Program<br>&bull; <b>Mysterious disappearance</b> — items that simply go missing with no evidence of forced entry<br>&bull; <b>Mold</b><br><br>Rodent damage <i>is</i> covered, but capped at $500. And burglary is covered — but never without a police report.",
+    chips:['police-report','secure-covered','file-claim'] },
+
+  { id:'rv-covered', t:"What does RV Park 'n' Protect cover?",
+    k:['rv covered','rv cover','what does rv cover','rv coverage','dings','dents','deductible reimbursement','catalytic converter','stolen parts','attached parts','parts stolen','converter','stolen off'],
+    a:"On-site accidental damage — dings, dents and collision while it's in your space — plus fire, explosion and smoke, burglary damage, vandalism, building collapse, and theft of contents.<br><br>Two favourites: it <b>reimburses their auto deductible</b>, and <b>stolen attached parts</b> (a catalytic converter, say) are covered at replacement cost for the part — though not the labour to fit it.",
+    chips:['rv-excluded','rv-contents','rv-second-vehicle'] },
+
+  { id:'rv-excluded', t:"What isn't covered on the RV plan?",
+    k:['rv not covered','rv exclusions','rv excluded','not covered on the rv','rv plan not covered','wildfire','wild fire','critter','rodent rv','rv mold'],
+    a:"Not covered: <b>flood</b>, <b>mysterious disappearance</b>, <b>mold</b>, and <b>rodent or critter damage</b> — these vehicles sit outdoors in non-climate-controlled spaces, so that last one is a deliberate exclusion.<br><br>One to watch: fire and explosion are covered, but <b>wildfires are specifically excluded</b>.",
+    chips:['rv-covered','police-report','file-claim'] },
+
+  { id:'rv-contents', t:'Does RV contents coverage travel?',
+    k:['contents','contents coverage','travel','off site','off-site','belongings inside','stuff inside','away from facility'],
+    a:"Yes — and tenants love this one. Contents coverage starts at <b>$350</b> and applies <b>on-site and off-site</b>.<br><br>So if they take the camper out for the weekend and something is stolen while they're away, they're still covered. Auto policies rarely do that; it's usually a homeowners item.",
+    chips:['rv-covered','rv-second-vehicle','pricing'] },
+
+  { id:'rv-second-vehicle', t:'Is a second vehicle covered?',
+    k:['second vehicle','two vehicles','another car','swap','leave their car','extra vehicle','car in the space'],
+    a:"Yes. If a tenant leaves their car in the space while the camper is out for the weekend, that car is covered too.<br><br>Just have them <b>list it on the addendum</b> — that's exactly what that section is for. No extra fee, no separate plan.",
+    chips:['addendum','rv-covered','rv-contents'] },
+
+  { id:'portable-covered', t:'What does Portable Container cover?',
+    k:['portable covered','container covered','what does portable container cover','container cover','portable container cover','transit','three phases','on site','moving'],
+    a:"All three phases on a single fee — <b>in storage</b>, <b>in transit</b> (including collision, upset and overturn, and negligent handling), and <b>on-site</b> at the customer's location.<br><br>It also carries a <b>container waiver</b> for damage to the container itself, and covers the usual perils: fire, burglary, vandalism, windstorm and collapse.",
+    chips:['portable-deductible','file-claim','pricing'] },
+
+  { id:'portable-deductible', t:'Is there a deductible on Portable Container?',
+    k:['portable deductible','container deductible','250','lock discount','disc lock','deductible waived'],
+    a:"There's a <b>$250 burglary deductible</b> — but it's <b>waived</b> if the tenant used an approved lock (disc, cylinder, DaVinci or Noke).<br><br>Worth mentioning at the counter: recommending the right lock can save them $250 later. Rodent and insect damage is capped at $500, and is void if food was stored in the container.",
+    chips:['portable-covered','police-report','file-claim'] },
+
+  /* ---------- claims ---------- */
+  { id:'file-claim', t:'How does a tenant file a claim?',
+    k:['file a claim','how to file','claim','filing','make a claim','start a claim','claims process','report damage'],
+    a:"Online, any hour of any day:<br><br>&bull; <b>TPP Secure &amp; Portable Container</b> — <a href='https://tppclaims.com' target='_blank' rel='noopener'>tppclaims.com</a><br>&bull; <b>RV Park 'n' Protect</b> — <a href='https://rvparknprotectclaims.com' target='_blank' rel='noopener'>rvparknprotectclaims.com</a><br><br>A claim number is assigned within minutes. Live adjusters are available <b>Monday–Friday, 7:00 AM – 5:30 PM Arizona time</b>.",
+    chips:['claim-window','claim-docs','claim-advice'] },
+
+  { id:'claim-window', t:'How long do they have to file?',
+    k:['how long','deadline','time limit','30 days','thirty days','window','too late','when to file'],
+    a:"<b>30 days from the date of discovery</b> — not from when the damage happened. That distinction matters when a tenant hasn't visited their unit or vehicle in a while.<br><br>Encourage them to open the claim straight away and send documentation in afterwards. Waiting until everything is gathered is how people miss the window.",
+    chips:['claim-docs','file-claim','claim-advice'] },
+
+  { id:'claim-docs', t:'What documentation is needed?',
+    k:['documentation','what do they need','photos','receipts','evidence','proof','inventory list','paperwork for claim'],
+    a:"Generally: photos of the damage, an inventory of what was lost with any receipts or proof of value, the signed addendum, and repair quotes where relevant.<br><br>For anything involving theft or forced entry you also need a <b>police report</b> and your own manager's incident report. Tell tenants not to move or clear anything until the documentation is complete.",
+    chips:['police-report','claim-window','claim-advice'] },
+
+  { id:'police-report', t:'Is a police report required?',
+    k:['police report','police','theft','burglary','stolen','break in','break-in','forced entry'],
+    a:"<b>Yes — no burglary or theft claim is paid without one.</b> The tenant must file with the police and provide a copy to claims.<br><br>You'll also need photos showing visible forced entry, plus your own incident report. If a tenant calls you about a theft, the very first thing to tell them is: call the police.",
+    chips:['claim-docs','file-claim','claim-window'] },
+
+  { id:'claim-advice', t:'A tenant asked how much they will get',
+    k:['how much will they get','how much will they be paid','reimbursement','payout','settlement','how much paid','claim amount','what will they receive','how much for their claim','tenant asked how much'],
+    a:"Politely redirect them to the TPP claims adjuster — <b>please don't estimate a reimbursement amount or give claims advice</b>, even to be helpful. A well-meant guess can turn into a complaint later.<br><br>\"I'm not the right person to put a number on that, but the adjuster will walk you through it\" is the perfect answer.",
+    chips:['file-claim','claim-docs','contact'] },
+
+  { id:'claim-speed', t:'How fast are claims paid?',
+    k:['how fast','how long does it take','speed','when will they be paid','check','72 hours','turnaround'],
+    a:"A claim number is issued within minutes of filing, and the tenant is emailed with next steps. Once a claim is adjusted they're sent a release to sign.<br><br>Our goal is to release a check <b>within 72 hours of receiving the signed release</b> — not the 30/60/90 day wait tenants expect.",
+    chips:['file-claim','claim-docs','why-tpp'] },
+
+  /* ---------- documents & onboarding ---------- */
+  { id:'letters', t:'How do the tenant letters work?',
+    k:['letters','tenant letters','announcement','launch letter','pre-launch','notify tenants','mail','who sends the letters'],
+    a:"<b>We write them, you approve them, then they go out from your own software.</b><br><br>We draft the tenant announcement letters and send them to you first — <b>nothing reaches a tenant until you've read them and signed off</b>. Once approved, they're sent from your own property management software, so they arrive from a name your tenants already recognise.<br><br>Want the wording softened or a date moved? Teon Delacruz will work through it with you.",
+    chips:['documents','contact','onboarding'] },
+
+  { id:'documents', t:'What documents will I receive?',
+    k:['what documents','documents','paperwork','forms','what will i get','document examples','packet'],
+    a:"Everything comes to you ready to use — <b>we prepare all of it</b>:<br><br>&bull; The <b>Tenant Addendum</b> for your lease<br>&bull; The <b>Terms &amp; Conditions</b><br>&bull; Your <b>tenant announcement letters</b><br>&bull; The <b>monthly reporting template</b><br><br>You can preview them all on the <b>Document Examples</b> tab. There's nothing for you to fill in or send back.",
+    chips:['addendum','terms','letters'] },
+
+  { id:'addendum', t:'Tell me about the addendum',
+    k:['addendum','tenant addendum','lease addendum','sign','signature','responsibility addendum'],
+    a:"The addendum is the document that makes everything else work — it records which coverage level the tenant chose, and it's what claims are validated against.<br><br><b>Get it signed at the time of rental. Every time, without exception.</b> On the RV plan it's also where the tenant lists every vehicle in the space, including a second one.",
+    chips:['terms','rv-second-vehicle','documents'] },
+
+  { id:'terms', t:'Where are the terms and conditions?',
+    k:['terms','conditions','t&c','tc','terms and conditions','fine print','policy wording'],
+    a:"Always current online, so you never have to wonder whether you're holding the right version:<br><br>&bull; <b>TPP Secure</b> — <a href='http://tpptermsandconditions.com/' target='_blank' rel='noopener'>tpptermsandconditions.com</a><br>&bull; <b>RV Park 'n' Protect</b> — <a href='http://rvparknprotecttc.com/' target='_blank' rel='noopener'>rvparknprotecttc.com</a><br><br>They're also printed on the rack cards, so tenants can find them any time.",
+    chips:['addendum','documents','contact'] },
+
+  { id:'reporting', t:'How does monthly reporting work?',
+    k:['monthly report','reporting','report','send report','5th','15th','invoice','month end'],
+    a:"One rhythm, every month: send the prior month's enrolments to <a href='mailto:reports@tenantpropertyprotection.com'>reports@tenantpropertyprotection.com</a> by the <b>5th</b>, and that month's invoice is paid by the <b>15th</b>.<br><br>So August's report goes out by <b>5 September</b> and is paid by <b>15 September</b> — that payment covers August, not October.",
+    chips:['billing','contact','onboarding'] },
+
+  { id:'birdseye', t:'What is the BirdsEye inventory?',
+    k:['birdseye','birds eye','inventory','5000','high limit','application','underwriter','photos of items'],
+    a:"For plans of <b>$5,000 and above</b>, the tenant submits a short application with an inventory list and photos through the BirdsEye tool.<br><br>It gives underwriters a baseline <i>before</i> anything happens, which is what keeps fraudulent claims from driving everyone's costs up. We notify you once the enrolment is approved.",
+    chips:['secure','pricing','claim-docs'] },
+
+  { id:'onboarding', t:'What happens during onboarding?',
+    k:['onboarding','get started','getting started','next steps','what happens next','launch','go live','timeline'],
+    a:"Four steps, and you set the pace:<br><br><b>1.</b> Your team watches the training for your program<br><b>2.</b> Every manager and CSR completes it<br><b>3.</b> You review the document examples<br><b>4.</b> You approve your tenant letters, and we launch<br><br>Most customers are live within a couple of weeks. After that the only recurring task is the monthly report.",
+    chips:['training-first','letters','reporting'] },
+
+  /* ---------- training ---------- */
+  { id:'training-first', t:'Which training video should we watch?',
+    k:['which video','which training','what should i watch','training first','where do i start','courses','video'],
+    a:"Watch the one that matches <b>your</b> program — that's the only one you strictly need. If you offer more than one plan, work through each in any order.<br><br>Each runs under 20 minutes, pauses at four short knowledge checks, and ends with a printable certificate. Not sure which program you're on? Teon can confirm it in a moment.",
+    chips:['who-trains','certificate','contact'] },
+
+  { id:'who-trains', t:'Who needs to complete the training?',
+    k:['who needs training','who should watch','which staff','managers','csr','new staff','everyone'],
+    a:"Every manager and CSR who speaks with tenants. The courses are built around the questions tenants actually ask, so anyone at the counter or on the phone will get value from it.<br><br>There's no enrolment and no deadline — new staff can work through it whenever they join.",
+    chips:['training-first','certificate','tracking'] },
+
+  { id:'certificate', t:'Is there a certificate?',
+    k:['certificate','certification','proof of completion','completed','print','record'],
+    a:"Yes. Each course ends with a printable completion certificate showing the person's name, their first-try score and the date, plus a unique certificate ID.<br><br>There's also a <b>\"Report my completion\"</b> button on the certificate that sends the details straight to TPP, so your training record builds itself.",
+    chips:['tracking','who-trains','training-first'] },
+
+  { id:'tracking', t:'How do you track who completed training?',
+    k:['track','tracking','who completed','records','completion','report completion','see who'],
+    a:"When someone finishes a course, they click <b>Report my completion</b> on their certificate. That sends their name, course, score, date and certificate ID to TPP, and we log it against your account.<br><br>Ask Teon any time for a completion summary for your site.",
+    chips:['certificate','contact','who-trains'] },
+
+  /* ---------- support ---------- */
+  { id:'contact', t:'How do I contact support?',
+    k:['contact','support','who do i call','phone','email','help','speak to someone','teon','human','representative'],
+    a:"<b>Teon Delacruz</b>, your Client Success Manager:<br><br>&bull; <a href='mailto:tdelacruz@tenantpropertyprotection.com'>tdelacruz@tenantpropertyprotection.com</a><br>&bull; <a href='tel:+16232150691'>623-215-0691</a><br>&bull; Monday–Friday, <b>7:00 AM – 5:30 PM Arizona time</b><br><br>He handles onboarding, training, documents and any changes you need. There's no charge for training support and no limit on it.",
+    chips:['hours','file-claim','onboarding'] },
+
+  { id:'hours', t:'What are your hours?',
+    k:['hours','open','what time','when are you open','availability','time zone','arizona'],
+    a:"Our team is available <b>Monday–Friday, 7:00 AM – 5:30 PM Arizona time</b>, and that's also when live claims adjusters are on.<br><br>Claims themselves can be <b>filed online at any hour of any day</b> — the 30-day window never depends on office hours.",
+    chips:['contact','file-claim','claim-window'] },
+
+  { id:'upload', t:'Can I upload documents to this portal?',
+    k:['upload','can i upload','add documents','submit','send you a file','attach'],
+    a:"Not here — this portal is deliberately <b>view-only</b> for customers, so nothing gets mixed up. TPP prepares and issues every program document.<br><br>If you need to send us something, email it to Teon at <a href='mailto:tdelacruz@tenantpropertyprotection.com'>tdelacruz@tenantpropertyprotection.com</a> and he'll take it from there.",
+    chips:['documents','contact','letters'] }
+  ]
+};
+
+/* ---------- Meredith: intent matching ---------- */
+const M_STOP = new Set(['the','a','an','is','are','do','does','did','i','we','you','my','our','your',
+  'to','of','for','on','in','it','that','this','what','how','can','and','be','with','if','so','me',
+  'have','has','will','would','should','there','they','them','their','about','get','got','when','who']);
+
+function mNorm(s){ return (s||'').toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ').trim(); }
+function mTokens(s){ return mNorm(s).split(' ').filter(w => w && !M_STOP.has(w)); }
+
+/* light stemming so "cover/covers/covered/coverage" all collide */
+function mStem(w){
+  w = w.replace(/(ing|ed)$/, '');
+  // strip the plural 's' only — stripping 'es' first turned "wildfires" into
+  // "wildfir" while "wildfire" stayed put, so they never matched each other
+  if (w.length > 3 && /s$/.test(w) && !/ss$/.test(w)) w = w.slice(0, -1);
+  return w.replace(/(age|ance|ment)$/, '');
+}
+
+function mScore(query, entry){
+  const q = mNorm(query), qt = mTokens(query).map(mStem);
+  if (!qt.length) return 0;
+  let score = 0;
+
+  // whole-phrase hits are the strongest signal
+  entry.k.forEach(k => {
+    const kn = mNorm(k);
+    if (!kn) return;
+    if (kn.includes(' ') && q.includes(kn)) score += 6 + kn.split(' ').length;
+    else if (!kn.includes(' ') && qt.includes(mStem(kn))) score += 3;
+  });
+
+  // token overlap with keywords and the title
+  const bag = new Set();
+  entry.k.forEach(k => mTokens(k).forEach(w => bag.add(mStem(w))));
+  mTokens(entry.t).forEach(w => bag.add(mStem(w)));
+  qt.forEach(w => { if (bag.has(w)) score += 1.5; });
+
+  // don't let a long keyword list win on volume alone
+  return score / (1 + Math.log(1 + entry.k.length) * 0.18);
+}
+
+function mFind(query){
+  const ranked = MEREDITH.KB.map(e => ({ e, s: mScore(query, e) }))
+                            .sort((a,b) => b.s - a.s);
+  return ranked;
+}
+
+/* ---------- Meredith: widget ---------- */
+(function(){
+  const M_AVATAR = '<svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">'
+    + '<stop offset="0" stop-color="#B01824"/><stop offset="1" stop-color="#7d1019"/></linearGradient></defs>'
+    + '<circle cx="20" cy="20" r="20" fill="url(#mg)"/>'
+    + '<circle cx="20" cy="15.5" r="5.6" fill="#fff" opacity=".95"/>'
+    + '<path d="M8.8 33.5a11.6 11.6 0 0 1 22.4 0z" fill="#fff" opacity=".95"/></svg>';
+
+  const el = document.createElement('div');
+  el.innerHTML = `
+  <button class="m-fab" id="mFab" aria-label="Chat with Meredith" aria-expanded="false">
+    <span class="m-fab-av">${M_AVATAR}</span>
+    <span class="m-fab-t"><b>Ask Meredith</b><i>TPP assistant</i></span>
+  </button>
+
+  <div class="m-panel" id="mPanel" role="dialog" aria-label="Chat with Meredith" aria-modal="false">
+    <div class="m-head">
+      <span class="m-head-av">${M_AVATAR}<i class="m-dot"></i></span>
+      <div class="m-head-t"><b>Meredith</b><span>TPP Customer Assistant &middot; online</span></div>
+      <button class="m-x" id="mClose" aria-label="Close chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="m-log" id="mLog" aria-live="polite"></div>
+    <div class="m-chips" id="mChips"></div>
+    <form class="m-in" id="mForm" autocomplete="off" onsubmit="return false">
+      <input id="mText" type="text" placeholder="Ask about coverage, claims, documents…" aria-label="Your question">
+      <button id="mSend" type="button" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+      </button>
+    </form>
+    <div class="m-foot">Meredith answers from TPP&rsquo;s program information. For anything specific to your
+      account, contact <a href="mailto:tdelacruz@tenantpropertyprotection.com">Teon Delacruz</a>.</div>
+  </div>`;
+  document.body.appendChild(el);
+
+  const $q = s => document.getElementById(s);
+  const log = $q('mLog'), chips = $q('mChips'), text = $q('mText'), panel = $q('mPanel'), fab = $q('mFab');
+  let started = false;
+
+  function bubble(who, html){
+    const d = document.createElement('div');
+    d.className = 'm-msg ' + who;
+    d.innerHTML = who === 'her'
+      ? `<span class="m-av">${M_AVATAR}</span><div class="m-b">${html}</div>`
+      : `<div class="m-b">${html}</div>`;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    return d;
+  }
+
+  function typing(){
+    const d = document.createElement('div');
+    d.className = 'm-msg her m-typing';
+    d.innerHTML = `<span class="m-av">${M_AVATAR}</span><div class="m-b"><i></i><i></i><i></i></div>`;
+    log.appendChild(d); log.scrollTop = log.scrollHeight;
+    return d;
+  }
+
+  function setChips(ids){
+    chips.innerHTML = '';
+    (ids || []).forEach(id => {
+      const e = MEREDITH.KB.find(x => x.id === id);
+      if (!e) return;
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'm-chip'; b.textContent = e.t;
+      b.addEventListener('click', () => ask(e.t, e));
+      chips.appendChild(b);
+    });
+  }
+
+  const ESCAPE = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const GREET = /^(hi|hey|hello|good (morning|afternoon|evening)|howdy|yo)\b/i;
+  const THANKS = /\b(thanks|thank you|cheers|appreciate it|got it|perfect|great)\b/i;
+  const BYE = /\b(bye|goodbye|see ya|that'?s all|no thanks)\b/i;
+
+  function respond(qtext){
+    if (GREET.test(qtext.trim()) && mTokens(qtext).length <= 3)
+      return { a:"Hello! I'm Meredith. Ask me anything about TPP's protection programs, claims, documents or training — or pick a topic below.",
+               chips: MEREDITH.openers };
+    if (BYE.test(qtext))
+      return { a:"Happy to help — good luck with the launch! If anything comes up, Teon Delacruz is on <a href='tel:+16232150691'>623-215-0691</a>.",
+               chips: MEREDITH.openers.slice(0,3) };
+    if (THANKS.test(qtext) && mTokens(qtext).length <= 4)
+      return { a:"You're very welcome. Anything else I can help with?", chips: MEREDITH.openers.slice(0,4) };
+
+    const ranked = mFind(qtext);
+    const best = ranked[0];
+    if (!best || best.s < 3.2) {
+      const near = ranked.slice(0,3).filter(r => r.s > 1.2).map(r => r.e.id);
+      return { a:"I'm not certain I have that one. I can help with coverage, pricing, claims, documents, "
+                + "onboarding and training — or for anything specific to your account, "
+                + "<b>Teon Delacruz</b> is the person to ask: <a href='mailto:tdelacruz@tenantpropertyprotection.com'>email</a> "
+                + "or <a href='tel:+16232150691'>623-215-0691</a>."
+                + (near.length ? "<br><br>Did you mean one of these?" : ''),
+               chips: near.length ? near : MEREDITH.openers };
+    }
+    // if the runner-up is close, surface it as a follow-up
+    const extra = ranked[1] && ranked[1].s > best.s * 0.72 ? [ranked[1].e.id] : [];
+    const cs = (best.e.chips || []).concat(extra).filter((v,i,a) => a.indexOf(v) === i).slice(0,4);
+    return { a: best.e.a, chips: cs };
+  }
+
+  function ask(qtext, known){
+    if (!qtext.trim()) return;
+    bubble('you', ESCAPE(qtext));
+    text.value = '';
+    setChips([]);
+    const t = typing();
+    const r = known ? { a: known.a, chips: known.chips } : respond(qtext);
+    const delay = 320 + Math.min(620, r.a.length * 1.4);
+    setTimeout(() => {
+      t.remove();
+      bubble('her', r.a);
+      setChips(r.chips);
+    }, delay);
+  }
+
+  function start(){
+    if (started) return;
+    started = true;
+    const t = typing();
+    setTimeout(() => { t.remove(); bubble('her', MEREDITH.intro); setChips(MEREDITH.openers); }, 420);
+  }
+
+  function open(){
+    panel.classList.add('on'); fab.setAttribute('aria-expanded','true');
+    start(); setTimeout(() => text.focus(), 260);
+  }
+  function close(){ panel.classList.remove('on'); fab.setAttribute('aria-expanded','false'); fab.focus(); }
+
+  fab.addEventListener('click', () => panel.classList.contains('on') ? close() : open());
+  $q('mClose').addEventListener('click', close);
+  $q('mSend').addEventListener('click', () => ask(text.value));
+  text.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ask(text.value); } });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('on')) close(); });
+
+  window.meredith = { open, close, ask, respond, find: mFind };
+})();
 </script>
 </body>
 </html>
