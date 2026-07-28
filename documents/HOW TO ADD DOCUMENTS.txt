@@ -1,0 +1,59 @@
+HOW TO ADD DOCUMENTS TO THE PORTAL
+==================================
+
+TWO STEPS.
+
+  1. Drag your PDF into the right program folder below.
+  2. Double-click PUBLISH.bat in the folder above this one.
+
+That's it. The portal updates about a minute later.
+
+
+WHICH FOLDER
+------------
+  documents\portable-container\   Portable Container Protection
+  documents\tpp-secure\           TPP Secure
+  documents\rv-park-n-protect\    RV Park 'n' Protect
+
+
+NAMING YOUR FILE
+----------------
+Include one of these words in the filename and the document attaches itself to
+the matching card on the portal:
+
+  prelaunch-letter       the pre-launch announcement letter  (Portable Container)
+  announcement-letter    the tenant announcement letter      (TPP Secure, RV)
+  addendum               the tenant addendum
+  terms                  the terms and conditions
+  reporting              the monthly reporting template
+  birdseye               the BirdsEye inventory application  (TPP Secure)
+
+Capitals, spaces, hyphens and underscores don't matter. All of these work:
+
+  addendum.pdf
+  TPP Secure Addendum EXAMPLE.pdf
+  tpp_secure_ADDENDUM_v3.pdf
+
+If a filename doesn't contain any of those words, the document still appears on
+the portal under that program - it just gets its own card using the filename as
+the title. Nothing is ever dropped.
+
+
+ACCEPTED FILE TYPES
+-------------------
+  .pdf  .docx  .doc  .xlsx  .png  .jpg
+
+PDF is best - it opens in the browser without downloading.
+
+
+TO REMOVE A DOCUMENT
+--------------------
+Delete it from the folder and run PUBLISH.bat again. The card goes back to
+saying "Example being added".
+
+
+WHO CAN DO THIS
+---------------
+Only you. Publishing requires your GitHub sign-in on this computer. Customers
+who visit the portal can only view and download - there is no upload button
+anywhere on the website, and there is no way for them to add or change anything.
