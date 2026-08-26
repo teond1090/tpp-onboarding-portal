@@ -790,12 +790,15 @@ const PROG_INFO = {
 const OPTOUT = {
   site:  'myownpolicy.com',
   email: 'support@myownpolicy.com',
+  /* How long a tenant has to get their policy to us. */
+  days:  10,
   /* The three details that have to be legible in the tenant's photo. An
      opt-out cannot be completed without all three. */
   proof: ['The <b>insurance company</b> — the carrier’s name as it appears on the policy',
           'The <b>policy number</b>',
           'The <b>expiration date</b> — when the policy runs out'],
-  objective: 'How a tenant opts out with their own policy — and the three details their photo must show'
+  objective: 'How a tenant opts out with their own policy — the 10-day window and the three details '
+           + 'their photo must show'
 };
 
 /* One line per claims site, with the programs that share a site named
@@ -942,8 +945,18 @@ function renderOptOut(){
       ${ICON_WARN}
       <p>A tenant who already carries their own insurance can <b>opt out</b> by sending us their policy —
          online at <b><a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a></b> or by email.
-         Either route ends the same way: <b>we have to be able to verify the policy from the photo they send.</b>
+         They have <b>${OPTOUT.days} days</b> to do it. Either route ends the same way:
+         <b>we have to be able to verify the policy from the photo they send.</b>
          That single point is what most failed opt-outs come down to.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="sect-h" style="font-size:17px;margin-bottom:10px">
+        The deadline <span class="pill" style="margin-left:8px;vertical-align:middle">${OPTOUT.days} days</span></div>
+      <p style="color:var(--muted);font-size:14.5px;margin:0">
+        A tenant has <b>${OPTOUT.days} days</b> to get their policy to us. Worth saying out loud at the counter —
+        it is short, and a tenant who means to do it later often doesn&rsquo;t. If they have their
+        declaration page on their phone, the quickest thing is to have them send it there and then.</p>
     </div>
 
     <div class="card" style="margin-bottom:18px">
@@ -958,7 +971,8 @@ function renderOptOut(){
     <div class="card steps" style="margin-bottom:18px">
       <div class="step"><div class="stepn">1</div><div>
         <h4>The tenant enters their information</h4>
-        <p>Send them to <a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a>, where they fill in their details.</p></div></div>
+        <p>Send them to <a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a>, where they fill in
+           their details. This needs to happen within <b>${OPTOUT.days} days</b>.</p></div></div>
       <div class="step"><div class="stepn">2</div><div>
         <h4>They attach a photo of their policy</h4>
         <p>This is the step that matters. The photo must clearly show the insurance company, the policy
@@ -1100,6 +1114,8 @@ const OPTOUT_FAQS = [
      + 'All three. If one is missing or unreadable the policy can\u2019t be added to their account and the opt-out '
      + 'doesn\u2019t complete — so a photo of the <b>declaration page</b> is the one to ask for, since it normally '
      + 'shows all three at once.',
+       'They have <b>' + OPTOUT.days + ' days</b> to get it to us, so it is worth mentioning the deadline while '
+     + 'they are still standing in front of you.',
        'Our team reviews submissions Monday to Friday. If the tenant has any trouble uploading or submitting '
      + 'online, they can email <b>' + OPTOUT.email + '</b> directly and we\u2019ll add it from there.'] },
 
@@ -1411,9 +1427,21 @@ if (CLIENT) {
         + "&bull; <b>Online</b> — <a href='https://" + OPTOUT.site + "' target='_blank' rel='noopener'>" + OPTOUT.site + "</a>, "
         + "where they fill in their information and attach a photo of their policy<br>"
         + "&bull; <b>By email</b> — <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a>, attaching a photo of their declaration page<br><br>"
-        + "Either way the photo has to show <b>the insurance company, the policy number and the expiration date</b>. "
+        + "Either way the photo has to show <b>the insurance company, the policy number and the expiration date</b>, "
+        + "and they have <b>" + OPTOUT.days + " days</b> to send it. "
         + "Our team reviews opt-outs <b>Monday to Friday</b>.",
-        chips:['opt-out-photo','opt-out-check','contact'] },
+        chips:['opt-out-deadline','opt-out-photo','opt-out-check'] },
+
+      { id:'opt-out-deadline', t:'How long does a tenant have to opt out?',
+        k:['how long to opt out','how long does a tenant have','how long do they have','opt out deadline',
+           'deadline','how many days','time limit','window to opt out','too late to opt out',
+           'missed the deadline'],
+        a:"<b>" + OPTOUT.days + " days</b> to get their policy to us.<br><br>"
+        + "It is a short window, so it is worth saying out loud at the counter rather than leaving it to the "
+        + "paperwork. If the tenant has their declaration page on their phone, the quickest thing is to have them "
+        + "send it there and then — either at <a href='https://" + OPTOUT.site + "' target='_blank' rel='noopener'>"
+        + OPTOUT.site + "</a> or by email to <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a>.",
+        chips:['opt-out','opt-out-photo','opt-out-email'] },
 
       { id:'opt-out-photo', t:'What does the opt-out photo need to show?',
         k:['what does the photo need','photo requirements','photo show','declaration page photo',
