@@ -600,8 +600,8 @@ footer a{color:#cdd6e6}
           <div><h4>Monthly reporting</h4><p><a href="mailto:reports@tenantpropertyprotection.com">reports@tenantpropertyprotection.com</a><br>
           Send the prior month&rsquo;s report by the 5th; the invoice is paid by the 15th.</p></div></div>
         <div class="krow"><div class="ki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/></svg></div>
-          <div><h4>Filing a claim</h4><p>TPP Secure &amp; Portable Container: <a href="https://tppclaims.com" target="_blank" rel="noopener">tppclaims.com</a><br>
-          RV Park &lsquo;n&rsquo; Protect: <a href="https://rvparknprotectclaims.com" target="_blank" rel="noopener">rvparknprotectclaims.com</a><br>
+          <div><h4>Filing a claim</h4><p><span id="claimLines">TPP Secure &amp; Portable Container: <a href="https://tppclaims.com" target="_blank" rel="noopener">tppclaims.com</a><br>
+          RV Park &lsquo;n&rsquo; Protect: <a href="https://rvparknprotectclaims.com" target="_blank" rel="noopener">rvparknprotectclaims.com</a></span><br>
           Claims can be filed online any hour of any day. Live adjusters are available during support hours above.</p></div></div>
       </div>
 
@@ -764,6 +764,32 @@ const CLIENTS = {
     programs: ['tpp-secure','rv-park-n-protect'] }
 };
 
+/* Per-program wording, used to rebuild the few sentences that name every
+   program — the claims contacts and Meredith's program answers — so a
+   customer link only ever names the programs that customer runs. */
+const PROG_INFO = {
+  sec: { name:'TPP Secure',                    fits:'traditional self-storage units',
+         claims:'tppclaims.com' },
+  pcp: { name:'Portable Container Protection', fits:'portable/mobile containers, covering storage, transit <i>and</i> on-site placement',
+         claims:'tppclaims.com' },
+  rv:  { name:'RV Park ‘n’ Protect',           fits:'RVs, campers, trailers, boats and vehicles in your spaces',
+         claims:'rvparknprotectclaims.com' }
+};
+
+/* One line per claims site, with the programs that share a site named
+   together — so sec+pcp reads “TPP Secure & Portable Container Protection”
+   rather than repeating the same address twice. */
+function claimSites(progIds){
+  const bySite = [];
+  progIds.forEach(id => {
+    const info = PROG_INFO[id]; if (!info) return;
+    const row = bySite.filter(r => r.site === info.claims)[0];
+    if (row) row.names.push(info.name);
+    else bySite.push({ site: info.claims, names: [info.name] });
+  });
+  return bySite.map(r => ({ names: r.names.join(' &amp; '), site: r.site }));
+}
+
 const FAQS = [
   { q:'Which training video should we watch first?',
     a:['Watch the one that matches the program you’ve signed up for — that’s the only one you strictly need. '
@@ -865,6 +891,10 @@ function nameList(names){
   /* Name-specific wording only ever runs on a customer link. */
   if (!CLIENT) return;
   set('#heroKick', 'Prepared for ' + CLIENT.name);
+  set('#claimLines', claimSites(CLIENT.videos).map(r =>
+      r.names + ': <a href="https://' + r.site + '" target="_blank" rel="noopener">' + r.site + '</a>'
+    ).join('<br>'));
+
   set('#heroLede', 'Everything the ' + CLIENT.name + ' team needs to get started is right here — your ' +
       nameList(VIDEOS_SHOWN.map(v => v.title)) + ' training, examples of the documents ' +
       'we’ll prepare for you, and a direct line to your Client Success Manager. ' +
@@ -1047,17 +1077,17 @@ const MEREDITH = {
     a:"Three, each built for a different kind of storage:<br><br>&bull; <b>TPP Secure</b> — traditional self-storage units<br>&bull; <b>Portable Container Protection</b> — portable/mobile containers, covering storage, transit <i>and</i> on-site placement<br>&bull; <b>RV Park 'n' Protect</b> — RVs, campers, trailers, boats and vehicles in your spaces<br><br>Which one would you like to know more about?",
     chips:['secure','portable','rv'] },
 
-  { id:'secure', t:'Tell me about TPP Secure',
+  { id:'secure', prog:'sec', t:'Tell me about TPP Secure',
     k:['tpp secure','secure','self storage plan','storage unit plan','secure program'],
     a:"<b>TPP Secure</b> is our self-storage protection plan. Covered losses are settled at <b>full replacement cost with no deductible</b> — no depreciation, unlike a homeowners policy.<br><br>Example plan levels are $2,000, $3,000 and $5,000, and coverage and pricing are flexible. Plans of $5,000 and above need a short inventory through BirdsEye.",
     chips:['secure-covered','pricing','birdseye'] },
 
-  { id:'portable', t:'Tell me about Portable Container Protection',
+  { id:'portable', prog:'pcp', t:'Tell me about Portable Container Protection',
     k:['portable container','portable','container protection','mobile container','moving container','pods'],
     a:"<b>Portable Container Protection</b> covers the container through all <b>three phases on one fee</b> — while it's in storage, while it's <b>in transit</b>, and while it's placed on-site at the customer's location. That transit piece is what makes it different from a standard storage plan.<br><br>It also includes a container waiver, and it's backed by Chubb.",
     chips:['portable-covered','pricing','claim-docs'] },
 
-  { id:'rv', t:"Tell me about RV Park 'n' Protect",
+  { id:'rv', prog:'rv', t:"Tell me about RV Park 'n' Protect",
     k:["rv park","rv","park n protect","parknprotect",'camper','trailer','boat','motorhome','vehicle plan'],
     a:"<b>RV Park 'n' Protect</b> covers whatever is in the space — RVs, campers, trailers, boats, cars and trucks, indoors or out, covered or uncovered.<br><br>Here's the gap it fills: these vehicles are driven roughly <b>42 days a year</b>, so more than half of owners drop collision and comprehensive for the off season. A minor on-site bump then comes straight out of their pocket. For about the price of a coffee a week, we cover it.",
     chips:['rv-covered','rv-second-vehicle','rv-contents'] },
@@ -1079,42 +1109,42 @@ const MEREDITH = {
     chips:['why-tpp','pricing','training-first'] },
 
   /* ---------- coverage ---------- */
-  { id:'secure-covered', t:"What does TPP Secure cover?",
+  { id:'secure-covered', prog:'sec', t:"What does TPP Secure cover?",
     k:['what does secure cover','secure covered','storage covered','what is covered','covered perils','what does it cover'],
     a:"Covered losses are paid at <b>replacement cost, no deductible</b>. Fire, smoke and explosion, burglary, vandalism, water damage from plumbing, windstorm, building collapse, and rodent damage up to a <b>$500 sublimit</b>.<br><br>Want the exclusions? Those matter just as much.",
     chips:['secure-excluded','file-claim','birdseye'] },
 
-  { id:'secure-excluded', t:"What isn't covered under TPP Secure?",
+  { id:'secure-excluded', prog:'sec', t:"What isn't covered under TPP Secure?",
     k:['not covered secure','secure exclusions','secure excluded','storage exclusions','excluded','exclusions','what is not covered','flood','mold','mysterious disappearance'],
     a:"The main exclusions:<br><br>&bull; <b>Flood</b> — only available through the National Flood Insurance Program<br>&bull; <b>Mysterious disappearance</b> — items that simply go missing with no evidence of forced entry<br>&bull; <b>Mold</b><br><br>Rodent damage <i>is</i> covered, but capped at $500. And burglary is covered — but never without a police report.",
     chips:['police-report','secure-covered','file-claim'] },
 
-  { id:'rv-covered', t:"What does RV Park 'n' Protect cover?",
+  { id:'rv-covered', prog:'rv', t:"What does RV Park 'n' Protect cover?",
     k:['rv covered','rv cover','what does rv cover','rv coverage','dings','dents','deductible reimbursement','catalytic converter','stolen parts','attached parts','parts stolen','converter','stolen off'],
     a:"On-site accidental damage — dings, dents and collision while it's in your space — plus fire, explosion and smoke, burglary damage, vandalism, building collapse, and theft of contents.<br><br>Two favourites: it <b>reimburses their auto deductible</b>, and <b>stolen attached parts</b> (a catalytic converter, say) are covered at replacement cost for the part — though not the labour to fit it.",
     chips:['rv-excluded','rv-contents','rv-second-vehicle'] },
 
-  { id:'rv-excluded', t:"What isn't covered on the RV plan?",
+  { id:'rv-excluded', prog:'rv', t:"What isn't covered on the RV plan?",
     k:['rv not covered','rv exclusions','rv excluded','not covered on the rv','rv plan not covered','wildfire','wild fire','critter','rodent rv','rv mold'],
     a:"Not covered: <b>flood</b>, <b>mysterious disappearance</b>, <b>mold</b>, and <b>rodent or critter damage</b> — these vehicles sit outdoors in non-climate-controlled spaces, so that last one is a deliberate exclusion.<br><br>One to watch: fire and explosion are covered, but <b>wildfires are specifically excluded</b>.",
     chips:['rv-covered','police-report','file-claim'] },
 
-  { id:'rv-contents', t:'Does RV contents coverage travel?',
+  { id:'rv-contents', prog:'rv', t:'Does RV contents coverage travel?',
     k:['contents','contents coverage','travel','off site','off-site','belongings inside','stuff inside','away from facility'],
     a:"Yes — and tenants love this one. Contents coverage starts at <b>$350</b> and applies <b>on-site and off-site</b>.<br><br>So if they take the camper out for the weekend and something is stolen while they're away, they're still covered. Auto policies rarely do that; it's usually a homeowners item.",
     chips:['rv-covered','rv-second-vehicle','pricing'] },
 
-  { id:'rv-second-vehicle', t:'Is a second vehicle covered?',
+  { id:'rv-second-vehicle', prog:'rv', t:'Is a second vehicle covered?',
     k:['second vehicle','two vehicles','another car','swap','leave their car','extra vehicle','car in the space'],
     a:"Yes. If a tenant leaves their car in the space while the camper is out for the weekend, that car is covered too.<br><br>Just have them <b>list it on the addendum</b> — that's exactly what that section is for. No extra fee, no separate plan.",
     chips:['addendum','rv-covered','rv-contents'] },
 
-  { id:'portable-covered', t:'What does Portable Container cover?',
+  { id:'portable-covered', prog:'pcp', t:'What does Portable Container cover?',
     k:['portable covered','container covered','what does portable container cover','container cover','portable container cover','transit','three phases','on site','moving'],
     a:"All three phases on a single fee — <b>in storage</b>, <b>in transit</b> (including collision, upset and overturn, and negligent handling), and <b>on-site</b> at the customer's location.<br><br>It also carries a <b>container waiver</b> for damage to the container itself, and covers the usual perils: fire, burglary, vandalism, windstorm and collapse.",
     chips:['portable-deductible','file-claim','pricing'] },
 
-  { id:'portable-deductible', t:'Is there a deductible on Portable Container?',
+  { id:'portable-deductible', prog:'pcp', t:'Is there a deductible on Portable Container?',
     k:['portable deductible','container deductible','250','lock discount','disc lock','deductible waived'],
     a:"There's a <b>$250 burglary deductible</b> — but it's <b>waived</b> if the tenant used an approved lock (disc, cylinder, DaVinci or Noke).<br><br>Worth mentioning at the counter: recommending the right lock can save them $250 later. Rodent and insect damage is capped at $500, and is void if food was stored in the container.",
     chips:['portable-covered','police-report','file-claim'] },
@@ -1176,7 +1206,7 @@ const MEREDITH = {
     a:"One rhythm, every month: send the prior month's enrolments to <a href='mailto:reports@tenantpropertyprotection.com'>reports@tenantpropertyprotection.com</a> by the <b>5th</b>, and that month's invoice is paid by the <b>15th</b>.<br><br>So August's report goes out by <b>5 September</b> and is paid by <b>15 September</b> — that payment covers August, not October.",
     chips:['billing','contact','onboarding'] },
 
-  { id:'birdseye', t:'What is the BirdsEye inventory?',
+  { id:'birdseye', prog:'sec', t:'What is the BirdsEye inventory?',
     k:['birdseye','birds eye','inventory','5000','high limit','application','underwriter','photos of items'],
     a:"For plans of <b>$5,000 and above</b>, the tenant submits a short application with an inventory list and photos through the BirdsEye tool.<br><br>It gives underwriters a baseline <i>before</i> anything happens, which is what keeps fraudulent claims from driving everyone's costs up. We notify you once the enrolment is approved.",
     chips:['secure','pricing','claim-docs'] },
@@ -1224,6 +1254,44 @@ const MEREDITH = {
     chips:['documents','contact','letters'] }
   ]
 };
+
+/* On a customer link, narrow Meredith to that customer's programs.
+
+   Entries carrying a  prog:  tag belong to one program, so they drop out
+   when the customer doesn't run it — which also removes them as suggested
+   chips and as follow-ups, since both are looked up in this same list.
+   Two answers name every program, so they get rewritten to name only the
+   customer's. The full portal is untouched: with no ?client= this whole
+   block is skipped and Meredith answers on everything, as before. */
+if (CLIENT) {
+  const mine = CLIENT.videos;
+  MEREDITH.KB = MEREDITH.KB.filter(e => !e.prog || mine.indexOf(e.prog) !== -1);
+
+  const entry = id => MEREDITH.KB.filter(e => e.id === id)[0];
+
+  const progs = entry('programs');
+  if (progs) {
+    progs.t = 'Which programs are we set up with?';
+    progs.a = 'You’re set up with ' + nword(mine.length) + ':<br><br>' +
+              mine.map(id => '&bull; <b>' + PROG_INFO[id].name + '</b> — ' + PROG_INFO[id].fits).join('<br>') +
+              '<br><br>Which one would you like to know more about?';
+    progs.chips = mine.slice();
+  }
+
+  const claim = entry('file-claim');
+  if (claim) {
+    claim.a = 'Online, any hour of any day:<br><br>' +
+              claimSites(mine).map(r => '&bull; <b>' + r.names + '</b> — ' +
+                "<a href='https://" + r.site + "' target='_blank' rel='noopener'>" + r.site + '</a>').join('<br>') +
+              '<br><br>A claim number is assigned within minutes. Live adjusters are available ' +
+              '<b>Monday–Friday, 7:00 AM – 5:30 PM Arizona time</b>.';
+  }
+
+  /* Drop any opener or follow-up chip pointing at an entry that is now gone. */
+  const live = id => MEREDITH.KB.some(e => e.id === id);
+  MEREDITH.openers = MEREDITH.openers.filter(live);
+  MEREDITH.KB.forEach(e => { if (e.chips) e.chips = e.chips.filter(live); });
+}
 
 /* ---------- Meredith: intent matching ---------- */
 const M_STOP = new Set(['the','a','an','is','are','do','does','did','i','we','you','my','our','your',
