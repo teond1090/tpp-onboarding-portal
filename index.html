@@ -444,9 +444,9 @@ footer a{color:#cdd6e6}
 <!-- ==================== HOME ==================== -->
 <section class="page on" id="p-home">
   <div class="hero">
-    <div class="eyebrow">Welcome Aboard</div>
+    <div class="eyebrow" id="heroKick">Welcome Aboard</div>
     <h1>Welcome to Tenant Property Protection</h1>
-    <p>Everything your team needs to get started is right here — your training videos, examples of the
+    <p id="heroLede">Everything your team needs to get started is right here — your training videos, examples of the
        documents we&rsquo;ll prepare for you, and a direct line to your Client Success Manager.
        One link, one place, no hunting through email.</p>
     <div class="btnrow">
@@ -485,7 +485,7 @@ footer a{color:#cdd6e6}
       <a class="tile" href="#videos" data-p="videos">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3z"/></svg></div>
         <h3>Training Videos</h3>
-        <p>Three certification courses with built-in knowledge checks and a completion certificate.</p>
+        <p id="tileVids">Three certification courses with built-in knowledge checks and a completion certificate.</p>
         <div class="go">Open training &rarr;</div>
       </a>
       <a class="tile" href="#documents" data-p="documents">
@@ -517,7 +517,7 @@ footer a{color:#cdd6e6}
            no enrolment, no login, no deadline.</p></div></div>
       <div class="krow"><div class="ki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 13h8M8 17h5"/></svg></div>
         <div><h4>Share it freely</h4>
-        <p>Send this one link to your whole team instead of forwarding three separate video links.
+        <p id="shareNote">Send this one link to your whole team instead of forwarding three separate video links.
            It works on phones, tablets and desktops.</p></div></div>
     </div>
   </div>
@@ -527,7 +527,7 @@ footer a{color:#cdd6e6}
 <section class="page" id="p-videos">
   <div class="eyebrow">Manager &amp; CSR Certification</div>
   <h1 class="h1">Training Videos</h1>
-  <p class="lede">Three complete courses, each presented start to finish with built-in knowledge checks.
+  <p class="lede" id="vidsLede">Three complete courses, each presented start to finish with built-in knowledge checks.
      Watch the one that matches your program — or all three if you offer more than one.
      Each ends with a printable completion certificate.</p>
 
@@ -734,6 +734,36 @@ const PROGRAMS = [
   ]}
 ];
 
+/* =====================================================================
+   CUSTOMER LINKS — a version of this portal for one customer.
+
+   The portal's normal address keeps showing everything, exactly as it
+   always has. Adding  ?client=<id>  to the address shows only the
+   programs that customer actually runs, and greets them by name.
+
+   To add a customer:
+     1. copy one of the blocks below and give it a new id
+     2. list the programs they run, using the ids from the two lists above
+     3. duplicate the  all-purpose  folder, rename it to the new id, and
+        change the id inside its index.html
+   That gives them a short link of their own:
+        https://teond1090.github.io/tpp-onboarding-portal/their-id/
+
+   Deleting a block only removes that one customer's link. Nothing here
+   can change what the main portal shows.
+
+     name     – shown in the welcome line on their home page
+     videos   – which courses to show:   pcp | sec | rv
+     programs – which document sets:     portable-container | tpp-secure | rv-park-n-protect
+   ===================================================================== */
+
+const CLIENTS = {
+  'all-purpose': {
+    name:     'All Purpose',
+    videos:   ['sec','rv'],
+    programs: ['tpp-secure','rv-park-n-protect'] }
+};
+
 const FAQS = [
   { q:'Which training video should we watch first?',
     a:['Watch the one that matches the program you’ve signed up for — that’s the only one you strictly need. '
@@ -786,13 +816,68 @@ const ICON_DL  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const ICON_EXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>';
 const ICON_PLAY= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3z"/></svg>';
 
+/* ===================== customer link ===================== */
+/* No ?client= on the address, or an id we don’t recognise, means the full
+   portal — the shared link behaves exactly as it always has. */
+function currentClient(){
+  try {
+    const id = new URLSearchParams(location.search).get('client');
+    return (id && Object.prototype.hasOwnProperty.call(CLIENTS, id)) ? CLIENTS[id] : null;
+  } catch (e) { return null; }
+}
+const CLIENT         = currentClient();
+const VIDEOS_SHOWN   = CLIENT ? VIDEOS.filter(v   => CLIENT.videos.indexOf(v.id)   !== -1)   : VIDEOS;
+const PROGRAMS_SHOWN = CLIENT ? PROGRAMS.filter(p => CLIENT.programs.indexOf(p.id) !== -1) : PROGRAMS;
+
+/* The page copy states how many courses there are in three places. Rather
+   than hard-coding it, write it from whatever is actually being shown — so
+   the full portal still reads “Three” and nothing has to be kept in step. */
+const NWORD = ['no','one','two','three','four','five','six'];
+function nword(n){ return NWORD[n] || String(n); }
+function cap(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
+function nameList(names){
+  if (names.length < 2) return names[0] || '';
+  return names.slice(0,-1).join(', ') + ' and ' + names[names.length-1];
+}
+
+(function applyCopy(){
+  const n       = VIDEOS_SHOWN.length;
+  const courses = n === 1 ? 'course' : 'courses';
+  const set = (sel, html) => { const el = $(sel); if (el) el.innerHTML = html; };
+
+  set('#tileVids', cap(nword(n)) + ' certification ' + courses +
+      ' with built-in knowledge checks and a completion certificate.');
+
+  set('#shareNote', (n === 1
+      ? 'Send this one link to your whole team rather than forwarding the video link around.'
+      : 'Send this one link to your whole team instead of forwarding ' + nword(n) +
+        ' separate video links.') +
+      ' It works on phones, tablets and desktops.');
+
+  set('#vidsLede', cap(nword(n)) + ' complete ' + courses +
+      ', each presented start to finish with built-in knowledge checks. ' +
+      (n === 1
+        ? 'Work through it in one sitting. '
+        : 'Watch the one that matches your program — or ' +
+          (n === 2 ? 'both' : 'all ' + nword(n)) + ' if you offer more than one. ') +
+      'Each ends with a printable completion certificate.');
+
+  /* Name-specific wording only ever runs on a customer link. */
+  if (!CLIENT) return;
+  set('#heroKick', 'Prepared for ' + CLIENT.name);
+  set('#heroLede', 'Everything the ' + CLIENT.name + ' team needs to get started is right here — your ' +
+      nameList(VIDEOS_SHOWN.map(v => v.title)) + ' training, examples of the documents ' +
+      'we’ll prepare for you, and a direct line to your Client Success Manager. ' +
+      'One link, one place, no hunting through email.');
+})();
+
 /* videos */
-$('#vids').innerHTML = VIDEOS.map((v,i) => `
+$('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
   <article class="vcard">
     <div class="vtop">
       <div class="vnum">${i+1}</div>
       <div class="vhead">
-        <div class="vkick">Course ${i+1} of ${VIDEOS.length}</div>
+        <div class="vkick">Course ${i+1} of ${VIDEOS_SHOWN.length}</div>
         <h3>${v.title} &mdash; ${v.sub}</h3>
         <p class="vdesc">${v.desc}</p>
         <div class="vmeta">
@@ -827,7 +912,7 @@ function docActions(d, found, extra){
 }
 
 function renderDocs(manifest){
-  document.getElementById('docs').innerHTML = PROGRAMS.map(p => {
+  document.getElementById('docs').innerHTML = PROGRAMS_SHOWN.map(p => {
     const m      = (manifest && manifest.programs && manifest.programs[p.id]) || {};
     const found  = m.matched || {};
     const extras = m.extra || [];
