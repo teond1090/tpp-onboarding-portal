@@ -790,8 +790,10 @@ const PROG_INFO = {
 const OPTOUT = {
   site:  'myownpolicy.com',
   email: 'support@myownpolicy.com',
-  /* How long a tenant has to get their policy to us. */
+  /* The window, when it starts, and what happens if it runs out. */
   days:  10,
+  from:  'the day they move in and sign the lease',
+  missed:'they are automatically enrolled in the protection plan',
   /* The three details that have to be legible in the tenant's photo. An
      opt-out cannot be completed without all three. */
   proof: ['The <b>insurance company</b> — the carrier’s name as it appears on the policy',
@@ -945,7 +947,7 @@ function renderOptOut(){
       ${ICON_WARN}
       <p>A tenant who already carries their own insurance can <b>opt out</b> by sending us their policy —
          online at <b><a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a></b> or by email.
-         They have <b>${OPTOUT.days} days</b> to do it. Either route ends the same way:
+         They have <b>${OPTOUT.days} days from move-in</b> to do it. Either route ends the same way:
          <b>we have to be able to verify the policy from the photo they send.</b>
          That single point is what most failed opt-outs come down to.</p>
     </div>
@@ -953,10 +955,14 @@ function renderOptOut(){
     <div class="card" style="margin-bottom:18px">
       <div class="sect-h" style="font-size:17px;margin-bottom:10px">
         The deadline <span class="pill" style="margin-left:8px;vertical-align:middle">${OPTOUT.days} days</span></div>
+      <p style="color:var(--muted);font-size:14.5px;margin:0 0 12px">
+        The clock starts <b>${OPTOUT.from}</b>. From that day the tenant has
+        <b>${OPTOUT.days} days</b> to get a policy to us that we can verify.</p>
       <p style="color:var(--muted);font-size:14.5px;margin:0">
-        A tenant has <b>${OPTOUT.days} days</b> to get their policy to us. Worth saying out loud at the counter —
-        it is short, and a tenant who means to do it later often doesn&rsquo;t. If they have their
-        declaration page on their phone, the quickest thing is to have them send it there and then.</p>
+        If the ${OPTOUT.days} days pass without one, <b>${OPTOUT.missed}</b>. That is why this is worth saying
+        out loud at the counter rather than leaving it to the paperwork — it is a short window, and a tenant who
+        means to do it later often doesn&rsquo;t. If they have their declaration page on their phone, the
+        quickest thing is to have them send it there and then.</p>
     </div>
 
     <div class="card" style="margin-bottom:18px">
@@ -972,7 +978,7 @@ function renderOptOut(){
       <div class="step"><div class="stepn">1</div><div>
         <h4>The tenant enters their information</h4>
         <p>Send them to <a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a>, where they fill in
-           their details. This needs to happen within <b>${OPTOUT.days} days</b>.</p></div></div>
+           their details — within <b>${OPTOUT.days} days</b> of moving in and signing the lease.</p></div></div>
       <div class="step"><div class="stepn">2</div><div>
         <h4>They attach a photo of their policy</h4>
         <p>This is the step that matters. The photo must clearly show the insurance company, the policy
@@ -1114,8 +1120,8 @@ const OPTOUT_FAQS = [
      + 'All three. If one is missing or unreadable the policy can\u2019t be added to their account and the opt-out '
      + 'doesn\u2019t complete — so a photo of the <b>declaration page</b> is the one to ask for, since it normally '
      + 'shows all three at once.',
-       'They have <b>' + OPTOUT.days + ' days</b> to get it to us, so it is worth mentioning the deadline while '
-     + 'they are still standing in front of you.',
+       'They have <b>' + OPTOUT.days + ' days</b> from ' + OPTOUT.from + ', and if that passes without a policy '
+     + 'we can verify, <b>' + OPTOUT.missed + '</b>. Worth mentioning while they are still standing in front of you.',
        'Our team reviews submissions Monday to Friday. If the tenant has any trouble uploading or submitting '
      + 'online, they can email <b>' + OPTOUT.email + '</b> directly and we\u2019ll add it from there.'] },
 
@@ -1428,15 +1434,19 @@ if (CLIENT) {
         + "where they fill in their information and attach a photo of their policy<br>"
         + "&bull; <b>By email</b> — <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a>, attaching a photo of their declaration page<br><br>"
         + "Either way the photo has to show <b>the insurance company, the policy number and the expiration date</b>, "
-        + "and they have <b>" + OPTOUT.days + " days</b> to send it. "
+        + "and they have <b>" + OPTOUT.days + " days from move-in</b> to send it. "
         + "Our team reviews opt-outs <b>Monday to Friday</b>.",
         chips:['opt-out-deadline','opt-out-photo','opt-out-check'] },
 
       { id:'opt-out-deadline', t:'How long does a tenant have to opt out?',
         k:['how long to opt out','how long does a tenant have','how long do they have','opt out deadline',
            'deadline','how many days','time limit','window to opt out','too late to opt out',
-           'missed the deadline'],
-        a:"<b>" + OPTOUT.days + " days</b> to get their policy to us.<br><br>"
+           'miss the deadline','missed the deadline','never send it','never sent it','do not send it',
+           'automatically enrolled','opted in automatically',
+           'when does the clock start','when does it start','days start','start counting',
+           'from move in','from when'],
+        a:"<b>" + OPTOUT.days + " days</b>, counted from <b>" + OPTOUT.from + "</b>.<br><br>"
+        + "If those " + OPTOUT.days + " days pass without a policy we can verify, <b>" + OPTOUT.missed + "</b>.<br><br>"
         + "It is a short window, so it is worth saying out loud at the counter rather than leaving it to the "
         + "paperwork. If the tenant has their declaration page on their phone, the quickest thing is to have them "
         + "send it there and then — either at <a href='https://" + OPTOUT.site + "' target='_blank' rel='noopener'>"
