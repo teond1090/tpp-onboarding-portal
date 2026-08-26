@@ -798,6 +798,12 @@ const OPTOUT = {
      the pair of facts a manager gets challenged on. */
   prorate:'the plan is not pro-rated — a full month is charged whether the tenant is on it for one day '
         + 'or the whole month',
+  /* Units that should never be sent an opt-out notice at all. */
+  excluded:['Tenants who have been <b>grandfathered in</b>',
+            '<b>Company units</b>',
+            '<b>Charity units</b>'],
+  csm:      'Teon Delacruz',
+  csmEmail: 'tdelacruz@tenantpropertyprotection.com',
   /* The three details that have to be legible in the tenant's photo. An
      opt-out cannot be completed without all three. */
   proof: ['The <b>insurance company</b> — the carrier’s name as it appears on the policy',
@@ -1026,7 +1032,25 @@ function renderOptOut(){
         afterwards.</p>
       <div class="btnrow" style="margin-top:16px">
         <a class="btn" href="${site}" target="_blank" rel="noopener">${ICON_WEB}Open ${OPTOUT.site}</a>
-        <a class="btn ghost" href="${mail}">${ICON_MAIL}Email ${OPTOUT.email}</a>
+        <a class="btn alt" href="${mail}">${ICON_MAIL}Email ${OPTOUT.email}</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="sect-h" style="font-size:17px;margin-bottom:10px">The exclusion list</div>
+      <p style="color:var(--muted);font-size:14.5px;margin:0 0 12px">
+        Some units should never receive an opt-out notice in the first place:</p>
+      <ul class="objl">${OPTOUT.excluded.map(x => `<li>${x}</li>`).join('')}</ul>
+      <p style="color:var(--muted);font-size:14.5px;margin:14px 0 0">
+        These can be added to an <b>exclusion list</b>. Once a tenant is on it they are
+        <b>never sent an opt-out notification at all</b> — no notice, no ${OPTOUT.days}-day clock,
+        no automatic enrolment.</p>
+      <p style="color:var(--muted);font-size:14.5px;margin:12px 0 0">
+        Setting it up is one email. Send <b>${OPTOUT.csm}</b> the list of tenants you want excluded and we
+        will add them. Worth doing <b>before launch</b>, so nobody who shouldn&rsquo;t hear from us does.</p>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="btn alt" href="mailto:${OPTOUT.csmEmail}?subject=Opt-out%20exclusion%20list">
+          ${ICON_MAIL}Send your exclusion list to ${OPTOUT.csm}</a>
       </div>
     </div>
   </div>`;
@@ -1150,6 +1174,13 @@ const OPTOUT_FAQS = [
        'On the money side, be straight with them: <b>' + OPTOUT.prorate + '</b>. Opting out part-way through a '
      + 'month does not reduce that month\u2019s charge, and there is no partial refund.',
        'It is much easier to say that at the counter than to explain it after the fact.'] },
+
+  { q:'Some of our units should never get an opt-out notice — can they be excluded?',
+    a:['Yes. Tenants who have been <b>grandfathered in</b>, <b>company units</b> and <b>charity units</b> can go '
+     + 'on an <b>exclusion list</b>. Once a tenant is on it they are never sent an opt-out notification at all — '
+     + 'no notice, no ' + OPTOUT.days + '-day clock and no automatic enrolment.',
+       'Send <b>' + OPTOUT.csm + '</b> the list of tenants you want excluded and we\u2019ll add them. It is worth '
+     + 'doing before launch so nobody who shouldn\u2019t hear from us does.'] },
 
   { q:'How do I check which of my tenants have sent in their policies?',
     a:['Email <b>' + OPTOUT.email + '</b>. That address isn\u2019t just for tenants — property managers can use it '
@@ -1512,6 +1543,20 @@ if (CLIENT) {
         + "On the billing, be straight with them: <b>" + OPTOUT.prorate + "</b>. Opting out part-way through a "
         + "month does not reduce that month's charge, and there is <b>no partial refund</b>.",
         chips:['opt-out','opt-out-deadline','opt-out-photo'] },
+
+      { id:'opt-out-exclusions', t:'Can some units be excluded from opt-out notices?',
+        k:['exclusion list','exclude a tenant','excluded from notices','grandfathered','grandfathered in',
+           'company unit','company units','charity unit','charity units','should not get a notice',
+           'do not send them a notice','skip these tenants','never receive a notice','exempt units',
+           'units be excluded','can some units','stop notices','stop the notices','no opt out notice'],
+        a:"Yes. These can go on an <b>exclusion list</b>:<br><br>&bull; tenants who have been "
+        + "<b>grandfathered in</b><br>&bull; <b>company units</b><br>&bull; <b>charity units</b><br><br>"
+        + "Once a tenant is on the list they are <b>never sent an opt-out notification at all</b> — no notice, "
+        + "no " + OPTOUT.days + "-day clock, no automatic enrolment.<br><br>"
+        + "Send <b>" + OPTOUT.csm + "</b> the list of tenants you want excluded — "
+        + "<a href='mailto:" + OPTOUT.csmEmail + "?subject=Opt-out%20exclusion%20list'>" + OPTOUT.csmEmail + "</a> "
+        + "— and we'll add them. Best done before launch.",
+        chips:['opt-out','opt-out-deadline','contact'] },
 
       { id:'myownpolicy', t:'What is ' + OPTOUT.site + '?',
         k:['myownpolicy','myownpolicy.com','my own policy','opt out website','opt out site'],
