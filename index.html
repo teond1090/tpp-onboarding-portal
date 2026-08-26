@@ -794,6 +794,10 @@ const OPTOUT = {
   days:  10,
   from:  'the day they move in and sign the lease',
   missed:'they are automatically enrolled in the protection plan',
+  /* Opting out is not a one-shot window, but the billing is not pro-rated —
+     the pair of facts a manager gets challenged on. */
+  prorate:'the plan is not pro-rated — a full month is charged whether the tenant is on it for one day '
+        + 'or the whole month',
   /* The three details that have to be legible in the tenant's photo. An
      opt-out cannot be completed without all three. */
   proof: ['The <b>insurance company</b> — the carrier’s name as it appears on the policy',
@@ -959,7 +963,8 @@ function renderOptOut(){
         The clock starts <b>${OPTOUT.from}</b>. From that day the tenant has
         <b>${OPTOUT.days} days</b> to get a policy to us that we can verify.</p>
       <p style="color:var(--muted);font-size:14.5px;margin:0">
-        If the ${OPTOUT.days} days pass without one, <b>${OPTOUT.missed}</b>. That is why this is worth saying
+        If the ${OPTOUT.days} days pass without one, <b>${OPTOUT.missed}</b>. They can still opt out later —
+        see below — but the month they are on the plan is charged in full. That is why this is worth saying
         out loud at the counter rather than leaving it to the paperwork — it is a short window, and a tenant who
         means to do it later often doesn&rsquo;t. If they have their declaration page on their phone, the
         quickest thing is to have them send it there and then.</p>
@@ -1006,6 +1011,19 @@ function renderOptOut(){
         <p>That same address works for <b>property managers</b>. Email
            <a href="${mail}">${OPTOUT.email}</a> to verify and confirm which of your tenants have sent us
            their policies. Reviewed Monday to Friday.</p></div></div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="sect-h" style="font-size:17px;margin-bottom:10px">Opting out later &mdash; and how the month is billed</div>
+      <p style="color:var(--muted);font-size:14.5px;margin:0 0 12px">
+        <b>A tenant can opt out at any time.</b> The ${OPTOUT.days} days is the window for avoiding enrolment in
+        the first place — it is not a cut-off after which they are stuck on the plan. The process is exactly the
+        same: send us the policy, showing the same three details.</p>
+      <p style="color:var(--muted);font-size:14.5px;margin:0">
+        Be straight about the billing, because it is the next question every time:
+        <b>${OPTOUT.prorate}</b>. Opting out part-way through a month does not reduce that month&rsquo;s charge,
+        and there is no partial refund. Saying so plainly at the counter is far easier than explaining it
+        afterwards.</p>
       <div class="btnrow" style="margin-top:16px">
         <a class="btn" href="${site}" target="_blank" rel="noopener">${ICON_WEB}Open ${OPTOUT.site}</a>
         <a class="btn ghost" href="${mail}">${ICON_MAIL}Email ${OPTOUT.email}</a>
@@ -1124,6 +1142,14 @@ const OPTOUT_FAQS = [
      + 'we can verify, <b>' + OPTOUT.missed + '</b>. Worth mentioning while they are still standing in front of you.',
        'Our team reviews submissions Monday to Friday. If the tenant has any trouble uploading or submitting '
      + 'online, they can email <b>' + OPTOUT.email + '</b> directly and we\u2019ll add it from there.'] },
+
+  { q:'Can a tenant opt out after the ' + OPTOUT.days + ' days — and is that month refunded?',
+    a:['Yes, <b>a tenant can opt out at any time</b>. The ' + OPTOUT.days + ' days is the window for avoiding '
+     + 'enrolment in the first place, not a cut-off. The process is the same — send us the policy showing the '
+     + 'insurance company, policy number and expiration date.',
+       'On the money side, be straight with them: <b>' + OPTOUT.prorate + '</b>. Opting out part-way through a '
+     + 'month does not reduce that month\u2019s charge, and there is no partial refund.',
+       'It is much easier to say that at the counter than to explain it after the fact.'] },
 
   { q:'How do I check which of my tenants have sent in their policies?',
     a:['Email <b>' + OPTOUT.email + '</b>. That address isn\u2019t just for tenants — property managers can use it '
@@ -1446,12 +1472,13 @@ if (CLIENT) {
            'when does the clock start','when does it start','days start','start counting',
            'from move in','from when'],
         a:"<b>" + OPTOUT.days + " days</b>, counted from <b>" + OPTOUT.from + "</b>.<br><br>"
-        + "If those " + OPTOUT.days + " days pass without a policy we can verify, <b>" + OPTOUT.missed + "</b>.<br><br>"
+        + "If those " + OPTOUT.days + " days pass without a policy we can verify, <b>" + OPTOUT.missed + "</b>. "
+        + "They can still opt out later — but the month is not pro-rated.<br><br>"
         + "It is a short window, so it is worth saying out loud at the counter rather than leaving it to the "
         + "paperwork. If the tenant has their declaration page on their phone, the quickest thing is to have them "
         + "send it there and then — either at <a href='https://" + OPTOUT.site + "' target='_blank' rel='noopener'>"
         + OPTOUT.site + "</a> or by email to <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a>.",
-        chips:['opt-out','opt-out-photo','opt-out-email'] },
+        chips:['opt-out-later','opt-out-photo','opt-out-email'] },
 
       { id:'opt-out-photo', t:'What does the opt-out photo need to show?',
         k:['what does the photo need','photo requirements','photo show','declaration page photo',
@@ -1473,6 +1500,18 @@ if (CLIENT) {
         + "sent us their policies.<br><br>It's reviewed <b>Monday to Friday</b> by the same internal team that "
         + "processes the opt-outs.",
         chips:['opt-out','opt-out-photo','contact'] },
+
+      { id:'opt-out-later', t:'Can a tenant opt out later — and is it refunded?',
+        k:['opt out later','opt out after','after the ' + OPTOUT.days + ' days','opt out anytime','opt out any time',
+           'refund','refunded','pro rated','prorated','pro rate','partial month','part of the month',
+           'cancel mid month','cancel anytime','cancel any time','cancel the plan','come off the plan',
+           'stop the plan','remove the plan','money back'],
+        a:"<b>Yes — a tenant can opt out at any time.</b> The " + OPTOUT.days + " days is the window for avoiding "
+        + "enrolment in the first place, not a cut-off. Same process: send us the policy showing the insurance "
+        + "company, policy number and expiration date.<br><br>"
+        + "On the billing, be straight with them: <b>" + OPTOUT.prorate + "</b>. Opting out part-way through a "
+        + "month does not reduce that month's charge, and there is <b>no partial refund</b>.",
+        chips:['opt-out','opt-out-deadline','opt-out-photo'] },
 
       { id:'myownpolicy', t:'What is ' + OPTOUT.site + '?',
         k:['myownpolicy','myownpolicy.com','my own policy','opt out website','opt out site'],
