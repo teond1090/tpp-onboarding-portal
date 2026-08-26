@@ -540,6 +540,7 @@ footer a{color:#cdd6e6}
   </div>
 
   <div class="sect grid" id="vids" style="gap:22px"></div>
+  <div id="optout"></div>
 </section>
 
 <!-- ==================== DOCUMENTS ==================== -->
@@ -761,7 +762,8 @@ const CLIENTS = {
   'protego': {
     name:     'Protego',
     videos:   ['sec','rv'],
-    programs: ['tpp-secure','rv-park-n-protect'] }
+    programs: ['tpp-secure','rv-park-n-protect'],
+    optOut:   true }
 };
 
 /* Per-program wording, used to rebuild the few sentences that name every
@@ -774,6 +776,26 @@ const PROG_INFO = {
          claims:'tppclaims.com' },
   rv:  { name:'RV Park ‘n’ Protect',           fits:'RVs, campers, trailers, boats and vehicles in your spaces',
          claims:'rvparknprotectclaims.com' }
+};
+
+/* =====================================================================
+   THE TENANT OPT-OUT PROCESS — myownpolicy.com
+
+   Shown on the Training Videos page of any customer whose entry above sets
+   optOut:true, under both courses, because the process is the same whichever
+   plan the tenant is on. To give it to everyone, the block that renders it
+   is keyed on that one flag.
+   ===================================================================== */
+
+const OPTOUT = {
+  site:  'myownpolicy.com',
+  email: 'support@myownpolicy.com',
+  /* The three details that have to be legible in the tenant's photo. An
+     opt-out cannot be completed without all three. */
+  proof: ['The <b>insurance company</b> — the carrier’s name as it appears on the policy',
+          'The <b>policy number</b>',
+          'The <b>expiration date</b> — when the policy runs out'],
+  objective: 'How a tenant opts out with their own policy — and the three details their photo must show'
 };
 
 /* One line per claims site, with the programs that share a site named
@@ -852,7 +874,9 @@ function currentClient(){
   } catch (e) { return null; }
 }
 const CLIENT         = currentClient();
-const VIDEOS_SHOWN   = CLIENT ? VIDEOS.filter(v   => CLIENT.videos.indexOf(v.id)   !== -1)   : VIDEOS;
+const VIDEOS_SHOWN   = (CLIENT ? VIDEOS.filter(v => CLIENT.videos.indexOf(v.id) !== -1) : VIDEOS)
+  /* copy rather than mutate, so the shared VIDEOS list is never touched */
+  .map(v => (CLIENT && CLIENT.optOut) ? Object.assign({}, v, { objs: v.objs.concat(OPTOUT.objective) }) : v);
 const PROGRAMS_SHOWN = CLIENT ? PROGRAMS.filter(p => CLIENT.programs.indexOf(p.id) !== -1) : PROGRAMS;
 
 /* The page copy states how many courses there are in three places. Rather
@@ -900,6 +924,76 @@ function nameList(names){
       'we’ll prepare for you, and a direct line to your Client Success Manager. ' +
       'One link, one place, no hunting through email.');
 })();
+
+/* The opt-out process, under both courses. */
+function renderOptOut(){
+  const ICON_WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".9" fill="currentColor"/></svg>';
+  const ICON_WEB  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/></svg>';
+  const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>';
+  const ICON_CHK  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/></svg>';
+  const site = 'https://' + OPTOUT.site, mail = 'mailto:' + OPTOUT.email;
+
+  $('#optout').innerHTML = `
+  <div class="sect">
+    <div class="sect-h">The Tenant Opt-Out Process</div>
+    <div class="sect-s">This part applies to both courses above — the process is the same whichever plan the tenant is on.</div>
+
+    <div class="notice">
+      ${ICON_WARN}
+      <p>A tenant who already carries their own insurance can <b>opt out</b> by sending us their policy —
+         online at <b><a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a></b> or by email.
+         Either route ends the same way: <b>we have to be able to verify the policy from the photo they send.</b>
+         That single point is what most failed opt-outs come down to.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="sect-h" style="font-size:17px;margin-bottom:12px">The photo has to show all three</div>
+      <ul class="objl">${OPTOUT.proof.map(x => `<li>${x}</li>`).join('')}</ul>
+      <p style="color:var(--muted);font-size:14.5px;margin:14px 0 0">
+        If any one of the three is missing, cut off or unreadable, <b>the policy cannot be added to the
+        tenant&rsquo;s account and the opt-out does not go through.</b> A photo of their
+        <b>declaration page</b> normally shows all three in a single shot — that is the one to ask for.</p>
+    </div>
+
+    <div class="card steps" style="margin-bottom:18px">
+      <div class="step"><div class="stepn">1</div><div>
+        <h4>The tenant enters their information</h4>
+        <p>Send them to <a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a>, where they fill in their details.</p></div></div>
+      <div class="step"><div class="stepn">2</div><div>
+        <h4>They attach a photo of their policy</h4>
+        <p>This is the step that matters. The photo must clearly show the insurance company, the policy
+           number and the expiration date — all three, in one readable image.</p></div></div>
+      <div class="step"><div class="stepn">3</div><div>
+        <h4>Our team reviews it</h4>
+        <p>An internal team reviews opt-out submissions and the support inbox <b>Monday to Friday</b>.
+           Once the three details are verified, the policy is added to the tenant&rsquo;s account.</p></div></div>
+    </div>
+
+    <div class="card">
+      <div class="sect-h" style="font-size:17px;margin-bottom:6px">If a tenant can&rsquo;t submit online</div>
+      <div class="krow"><div class="ki">${ICON_WEB}</div>
+        <div><h4>Online — the usual route</h4>
+        <p><a href="${site}" target="_blank" rel="noopener">${OPTOUT.site}</a> — the tenant fills in their
+           information and uploads the photo themselves.</p></div></div>
+      <div class="krow"><div class="ki">${ICON_MAIL}</div>
+        <div><h4>By email — if they hit any trouble</h4>
+        <p>If a tenant has trouble uploading or submitting on the site, they can email us directly at
+           <a href="${mail}">${OPTOUT.email}</a>. We add policies by email exactly the same way: the tenant
+           attaches a photo of their <b>declaration page</b> and we verify the carrier, policy number and
+           expiration date from it.</p></div></div>
+      <div class="krow"><div class="ki">${ICON_CHK}</div>
+        <div><h4>For you — checking who has sent theirs in</h4>
+        <p>That same address works for <b>property managers</b>. Email
+           <a href="${mail}">${OPTOUT.email}</a> to verify and confirm which of your tenants have sent us
+           their policies. Reviewed Monday to Friday.</p></div></div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="btn" href="${site}" target="_blank" rel="noopener">${ICON_WEB}Open ${OPTOUT.site}</a>
+        <a class="btn ghost" href="${mail}">${ICON_MAIL}Email ${OPTOUT.email}</a>
+      </div>
+    </div>
+  </div>`;
+}
+if (CLIENT && CLIENT.optOut) renderOptOut();
 
 /* videos */
 $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
@@ -996,8 +1090,27 @@ function loadManifest(){
 }
 loadManifest();
 
-/* faq */
-$('#faqs').innerHTML = FAQS.map((f,i) => `
+/* faq — an opt-out customer gets the two questions their front desk will
+   actually be asked, appended so the existing numbering doesn't shift */
+const OPTOUT_FAQS = [
+  { q:'A tenant says they already have their own insurance — what do they do?',
+    a:['They opt out by sending us their policy, either at <b>' + OPTOUT.site + '</b> or by email to '
+     + '<b>' + OPTOUT.email + '</b>. They fill in their information and attach a photo of their policy.',
+       'The photo has to clearly show <b>the insurance company, the policy number and the expiration date</b>. '
+     + 'All three. If one is missing or unreadable the policy can\u2019t be added to their account and the opt-out '
+     + 'doesn\u2019t complete — so a photo of the <b>declaration page</b> is the one to ask for, since it normally '
+     + 'shows all three at once.',
+       'Our team reviews submissions Monday to Friday. If the tenant has any trouble uploading or submitting '
+     + 'online, they can email <b>' + OPTOUT.email + '</b> directly and we\u2019ll add it from there.'] },
+
+  { q:'How do I check which of my tenants have sent in their policies?',
+    a:['Email <b>' + OPTOUT.email + '</b>. That address isn\u2019t just for tenants — property managers can use it '
+     + 'to verify and confirm who has sent us their policies.',
+       'It\u2019s reviewed Monday to Friday by the same internal team that processes the opt-outs.'] }
+];
+const FAQS_SHOWN = (CLIENT && CLIENT.optOut) ? FAQS.concat(OPTOUT_FAQS) : FAQS;
+
+$('#faqs').innerHTML = FAQS_SHOWN.map((f,i) => `
   <details class="faq">
     <summary><span class="qn">${i+1}</span>${f.q}</summary>
     <div class="ans">${f.a.map(p=>`<p>${p}</p>`).join('')}</div>
@@ -1285,6 +1398,66 @@ if (CLIENT) {
                 "<a href='https://" + r.site + "' target='_blank' rel='noopener'>" + r.site + '</a>').join('<br>') +
               '<br><br>A claim number is assigned within minutes. Live adjusters are available ' +
               '<b>Monday–Friday, 7:00 AM – 5:30 PM Arizona time</b>.';
+  }
+
+  /* Teach Meredith the opt-out process for customers who have it. */
+  if (CLIENT.optOut) {
+    MEREDITH.KB.push(
+      { id:'opt-out', t:'How does a tenant opt out?',
+        k:['opt out','opts out','opting out','opt out process','has their own insurance',
+           'already has their own insurance','already have insurance','already insured','my own policy',
+           'decline coverage','waive coverage','exempt'],
+        a:"If a tenant already carries their own insurance they can opt out by sending us their policy:<br><br>"
+        + "&bull; <b>Online</b> — <a href='https://" + OPTOUT.site + "' target='_blank' rel='noopener'>" + OPTOUT.site + "</a>, "
+        + "where they fill in their information and attach a photo of their policy<br>"
+        + "&bull; <b>By email</b> — <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a>, attaching a photo of their declaration page<br><br>"
+        + "Either way the photo has to show <b>the insurance company, the policy number and the expiration date</b>. "
+        + "Our team reviews opt-outs <b>Monday to Friday</b>.",
+        chips:['opt-out-photo','opt-out-check','contact'] },
+
+      { id:'opt-out-photo', t:'What does the opt-out photo need to show?',
+        k:['what does the photo need','photo requirements','photo show','declaration page photo',
+           'picture of their policy','policy number','expiration date','insurance company name',
+           'carrier name','was rejected','opt out failed','not accepted'],
+        a:"Three things, all legible in the same image:<br><br>&bull; the <b>insurance company</b><br>"
+        + "&bull; the <b>policy number</b><br>&bull; the <b>expiration date</b><br><br>"
+        + "If any one of them is missing, cut off or unreadable, the policy <b>can't be added to the tenant's "
+        + "account and the opt-out doesn't go through</b>. A photo of the <b>declaration page</b> normally shows "
+        + "all three at once — that's the one to ask for.",
+        chips:['opt-out','opt-out-check','dec-page'] },
+
+      { id:'opt-out-check', t:'How do I check who has sent in a policy?',
+        k:['who has opted out','check opt outs','sent in a policy','sent their policy','sent us their policy',
+           'confirm policies','verify tenant policy','which tenants sent','did they send','confirm receipt',
+           'check status of an opt out'],
+        a:"Email <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a>. That address works for "
+        + "<b>property managers</b> as well as tenants — use it to verify and confirm which of your tenants have "
+        + "sent us their policies.<br><br>It's reviewed <b>Monday to Friday</b> by the same internal team that "
+        + "processes the opt-outs.",
+        chips:['opt-out','opt-out-photo','contact'] },
+
+      { id:'myownpolicy', t:'What is ' + OPTOUT.site + '?',
+        k:['myownpolicy','myownpolicy.com','my own policy','opt out website','opt out site'],
+        a:"<a href='https://" + OPTOUT.site + "' target='_blank' rel='noopener'>" + OPTOUT.site + "</a> is where a "
+        + "tenant goes to <b>opt out</b> with their own insurance. They fill in their information and attach a photo "
+        + "of their policy showing the <b>insurance company, policy number and expiration date</b>.<br><br>"
+        + "If they have trouble with the site, they can email <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email
+        + "</a> instead — we add policies that way too.",
+        chips:['opt-out','opt-out-photo','opt-out-check'] },
+
+      { id:'opt-out-email', t:'The tenant can’t upload — what now?',
+        k:['cannot upload','can not upload','trouble uploading','trouble submitting','having trouble',
+           'problem uploading','cannot submit','email their policy','email the policy','send it by email',
+           'upload not working','site not working'],
+        a:"They email it to us instead. <a href='mailto:" + OPTOUT.email + "'>" + OPTOUT.email + "</a> takes "
+        + "policies directly, and we add them exactly the same way as the website.<br><br>"
+        + "The tenant attaches a photo of their <b>declaration page</b>, and we verify the "
+        + "<b>insurance carrier, policy number and expiration date</b> from it — the same three details the "
+        + "site asks for. An internal team works that inbox <b>Monday to Friday</b>.",
+        chips:['opt-out','opt-out-photo','opt-out-check'] }
+    );
+    MEREDITH.openers = MEREDITH.openers.slice(0,3)
+      .concat(['opt-out'], MEREDITH.openers.slice(3));
   }
 
   /* Drop any opener or follow-up chip pointing at an entry that is now gone. */
