@@ -827,7 +827,12 @@ const CLIENTS = {
     videos:   ['sec','rv'],
     programs: ['tpp-secure','rv-park-n-protect'],
     optOut:   true,
-    docLib:   'protego' }
+    docLib:   'protego',
+    /* Protego is All Purpose Storage's own brand for the storage plan, and it
+       files claims at its own address — both addendums and the plan terms say
+       so. RV is left on the standard site: nothing in their document pack
+       covers it. */
+    claims:   { sec: 'protegoclaims.com' } }
 };
 
 /* Per-program wording, used to rebuild the few sentences that name every
@@ -884,9 +889,10 @@ function claimSites(progIds){
   const bySite = [];
   progIds.forEach(id => {
     const info = PROG_INFO[id]; if (!info) return;
-    const row = bySite.filter(r => r.site === info.claims)[0];
+    const site = (CLIENT && CLIENT.claims && CLIENT.claims[id]) || info.claims;
+    const row = bySite.filter(r => r.site === site)[0];
     if (row) row.names.push(info.name);
-    else bySite.push({ site: info.claims, names: [info.name] });
+    else bySite.push({ site: site, names: [info.name] });
   });
   return bySite.map(r => ({ names: r.names.join(' &amp; '), site: r.site }));
 }
