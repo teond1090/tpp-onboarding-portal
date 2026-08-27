@@ -1026,13 +1026,19 @@ const ICON_PLAY= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 function currentClient(){
   try {
     const id = new URLSearchParams(location.search).get('client');
-    return (id && Object.prototype.hasOwnProperty.call(CLIENTS, id)) ? CLIENTS[id] : null;
+    if (!id || !Object.prototype.hasOwnProperty.call(CLIENTS, id)) return null;
+    return Object.assign({ id: id }, CLIENTS[id]);
   } catch (e) { return null; }
 }
 const CLIENT         = currentClient();
 const VIDEOS_SHOWN   = (CLIENT ? VIDEOS.filter(v => CLIENT.videos.indexOf(v.id) !== -1) : VIDEOS)
   /* copy rather than mutate, so the shared VIDEOS list is never touched */
-  .map(v => (CLIENT && CLIENT.optOut) ? Object.assign({}, v, { objs: v.objs.concat(OPTOUT.objective) }) : v);
+  .map(v => (CLIENT && CLIENT.optOut)
+    ? Object.assign({}, v, {
+        objs: v.objs.concat(OPTOUT.objective),
+        /* the course reads ?client= too, and shows the opt-out module for it */
+        url:  v.url + (v.url.indexOf('?') === -1 ? '?' : '&') + 'client=' + CLIENT.id })
+    : v);
 const PROGRAMS_SHOWN = CLIENT ? PROGRAMS.filter(p => CLIENT.programs.indexOf(p.id) !== -1) : PROGRAMS;
 
 /* The page copy states how many courses there are in three places. Rather
@@ -1092,7 +1098,8 @@ function renderOptOut(){
   $('#optout').innerHTML = `
   <div class="sect">
     <div class="sect-h">The Tenant Opt-Out Process</div>
-    <div class="sect-s">This part applies to both courses above — the process is the same whichever plan the tenant is on.</div>
+    <div class="sect-s">This part applies to both courses above — the process is the same whichever plan the tenant is on.
+       Each course also ends with this as a short module and a knowledge check, so it is covered either way.</div>
 
     <div class="notice">
       ${ICON_WARN}
