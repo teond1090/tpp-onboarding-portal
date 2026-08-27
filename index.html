@@ -344,6 +344,58 @@ footer a{color:#cdd6e6}
 @media print{ .m-fab,.m-panel{display:none!important} }
 
 @media print{ header,nav,footer,.btnrow{display:none} .page{display:block!important} }
+
+/* ---------- customer document library (customer links only) ---------- */
+.dl-group{margin-bottom:34px}
+.dl-head{display:flex;align-items:baseline;gap:12px;margin-bottom:4px;
+  padding-bottom:11px;border-bottom:2px solid var(--line)}
+.dl-head h3{font-size:18px;color:var(--navy);font-weight:800;margin:0}
+.dl-head .cnt{margin-left:auto;color:var(--muted);font-size:13px;font-weight:600;white-space:nowrap}
+.dl-sub{color:var(--muted);font-size:14.5px;margin:10px 0 18px}
+.dl-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.dcard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  display:flex;flex-direction:column;transition:box-shadow .15s,transform .15s;position:relative}
+.dcard:hover{box-shadow:0 8px 24px rgba(16,32,64,.13);transform:translateY(-2px)}
+.dshot{position:relative;display:block;border:none;padding:0;margin:0;width:100%;cursor:zoom-in;
+  background:#eef1f6;border-bottom:1px solid var(--line);line-height:0}
+.dshot img{width:100%;height:200px;object-fit:cover;object-position:top center;display:block}
+.dshot .zoom{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(16,32,64,.55);color:#fff;font:700 13.5px Inter,system-ui,sans-serif;
+  opacity:0;transition:opacity .15s;gap:8px}
+.dshot:hover .zoom,.dshot:focus-visible .zoom{opacity:1}
+.dshot .zoom svg{width:17px;height:17px}
+.dpages{position:absolute;top:9px;right:9px;background:rgba(16,32,64,.82);color:#fff;
+  border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:700;letter-spacing:.02em}
+.dbody{padding:15px 16px 0;flex:1}
+.dbody h4{margin:0 0 3px;font-size:15px;color:var(--navy);font-weight:800;line-height:1.35}
+.dwhen{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--red);margin-bottom:8px}
+.dbody p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.55}
+.dtag{display:inline-block;margin-top:10px;background:#fff5d6;border:1px solid #e6cf8a;
+  color:#7a5c12;border-radius:6px;padding:2px 8px;font-size:11.5px;font-weight:700}
+.dfoot{display:flex;gap:8px;flex-wrap:wrap;padding:14px 16px 16px;margin-top:14px}
+/* preview overlay */
+.dlg{position:fixed;inset:0;background:rgba(10,18,34,.78);z-index:120;display:none;
+  align-items:center;justify-content:center;padding:22px}
+.dlg.on{display:flex}
+.dlg-box{background:#fff;border-radius:14px;width:min(1000px,100%);height:min(92vh,100%);
+  display:flex;flex-direction:column;overflow:hidden}
+.dlg-top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dlg-top h4{margin:0;font-size:16px;color:var(--navy);font-weight:800}
+.dlg-top .sp{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.dlg-x{background:#eef1f6;border:none;border-radius:8px;width:34px;height:34px;cursor:pointer;
+  color:var(--navy);font-size:19px;line-height:1;flex:none}
+.dlg-x:hover{background:#e2e7ef}
+.dlg-pages{flex:1;overflow-y:auto;background:#eceff4;padding:20px;display:flex;
+  flex-direction:column;align-items:center;gap:18px;-webkit-overflow-scrolling:touch}
+.dlg-pages img{width:100%;max-width:820px;height:auto;display:block;background:#fff;
+  border:1px solid var(--line);border-radius:6px;box-shadow:0 4px 16px rgba(16,32,64,.14)}
+.dlg-pn{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+@media(max-width:640px){
+  .dl-grid{grid-template-columns:1fr}
+  .dlg{padding:0}
+  .dlg-box{border-radius:0;height:100%}
+}
 </style>
 </head>
 <body>
@@ -619,6 +671,17 @@ footer a{color:#cdd6e6}
 
 </main>
 
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+  <div class="dlg-box">
+    <div class="dlg-top">
+      <h4 id="dlgTitle"></h4>
+      <div class="sp" id="dlgLinks"></div>
+      <button class="dlg-x" id="dlgX" aria-label="Close preview">&times;</button>
+    </div>
+    <div class="dlg-pages" id="dlgPages"></div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap fin">
     <div>&copy; <span id="yr"></span> Tenant Property Protection &bull; American Owned &amp; Operated since 2009</div>
@@ -763,7 +826,8 @@ const CLIENTS = {
     name:     'Protego',
     videos:   ['sec','rv'],
     programs: ['tpp-secure','rv-park-n-protect'],
-    optOut:   true }
+    optOut:   true,
+    docLib:   'protego' }
 };
 
 /* Per-program wording, used to rebuild the few sentences that name every
@@ -826,6 +890,77 @@ function claimSites(progIds){
   });
   return bySite.map(r => ({ names: r.names.join(' &amp; '), site: r.site }));
 }
+
+/* =====================================================================
+   CUSTOMER DOCUMENT LIBRARY
+
+   A customer whose entry above sets  docLib  gets their own real documents
+   on the Document Examples page, in the order they actually go out, instead
+   of the generic per-program cards. Files live in documents/<docLib>/ as
+   <slug>.pdf (what the preview shows), <slug>.docx (the original), and
+   thumb/<slug>.png (the first page).
+
+   build_manifest.py only walks the three program folders, so PUBLISH.bat
+   ignores this folder entirely and cannot disturb it.
+   ===================================================================== */
+
+const DOCLIB = {
+  protego: [
+    { group:'Before launch',
+      note:'Sent once, to tenants who are already renting when the program starts. '
+         + 'We draft them and send them to you for approval — they go out from your own software.',
+      docs:[
+        { slug:'prelaunch-letter', pages:3, t:'Pre-Launch Announcement', when:'Before launch',
+          d:'Introduces the Protego Protection Program to existing tenants and explains what is '
+           + 'changing and when. Merge fields for facility name, tenant name and the start date.' },
+        { slug:'transition-letter', pages:2, t:'Transition Letter', when:'Before launch',
+          d:'For tenants moving across from a previous provider. Confirms their existing coverage '
+           + 'level carries over to the equivalent Protego plan at no extra cost.' } ]},
+
+    { group:'The launch month',
+      note:'The two letters that run the first month, built around the 30-day free trial.',
+      docs:[
+        { slug:'month-01-letter', pages:4, t:'1st of the Month Letter', when:'1st of the month',
+          d:'Opens the 30-day free trial of the $2,000 plan and explains the lease insurance '
+           + 'obligation. This is the letter that starts the clock.' },
+        { slug:'month-15-letter', pages:3, t:'15th of the Month Reminder', when:'15th of the month',
+          d:'The halfway reminder: the free trial is ending and the tenant needs to decide how '
+           + 'they will meet the insurance requirement.' } ]},
+
+    { group:'Ongoing tenant notices',
+      note:'Triggered by something the tenant does — or does not do. These keep running after launch.',
+      docs:[
+        { slug:'movein-notification', pages:3, t:'Move-In Notification', when:'At move-in',
+          d:'Goes to every new tenant on day one. Confirms their protection starts immediately and '
+           + 'tells them how to opt out with their own policy.' },
+        { slug:'ten-day-notice', pages:4, t:'10-Day Notification', when:'No policy on file',
+          d:'Action-required notice for a tenant with no active insurance on file. This is the one '
+           + 'that runs alongside the 10-day window before automatic enrolment.' },
+        { slug:'expiration-notice', pages:3, t:'Expiration Notice', when:'Policy expiring',
+          d:'Sent when a tenant\u2019s own declaration page is 10 days from expiry, so a lapse is '
+           + 'caught before it happens. This is why you no longer review records by hand.' },
+        { slug:'welcome-after-enrolment', pages:3, t:'Welcome After Auto-Enrolment', when:'After enrolment',
+          d:'Confirms coverage is active once a tenant has been enrolled automatically, and that '
+           + 'the charge is now on their rent.' } ]},
+
+    { group:'Forms and terms',
+      note:'What the tenant signs, and what they can read. The watermarked copies are the ones to '
+         + 'show a tenant or use in training; the clean copies are the live forms.',
+      docs:[
+        { slug:'addendum-12-example', pages:2, t:'$12 Addendum — example', when:'Signed at rental', tag:'Watermarked',
+          d:'The lease addendum recording the tenant\u2019s coverage election. $12/month for $2,000 '
+           + 'or $15 for $3,000. Carries a “Per The Lease” watermark.' },
+        { slug:'addendum-14-example', pages:2, t:'$14 Addendum — example', when:'Signed at rental', tag:'Watermarked',
+          d:'The updated rate card — $14/month for $2,000 or $18 for $3,000. Also watermarked.' },
+        { slug:'addendum-12', pages:2, t:'$12 Addendum — clean form', when:'Signed at rental',
+          d:'The signable version of the $12 addendum, with no watermark.' },
+        { slug:'addendum-14', pages:2, t:'$14 Addendum — clean form', when:'Signed at rental',
+          d:'The signable version of the updated $14 addendum, with no watermark.' },
+        { slug:'terms', pages:5, t:'Customer Protection Plan Terms', when:'Always available',
+          d:'The full protection plan terms — covered perils, exclusions, limits, the $250 burglary '
+           + 'deductible and the claims process. Also online at protegotermsconditions.com.' } ]}
+  ]
+};
 
 const FAQS = [
   { q:'Which training video should we watch first?',
@@ -1097,7 +1232,88 @@ function docActions(d, found, extra){
   return html;
 }
 
+/* ---------- customer document library ---------- */
+const ICON_ZOOM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>';
+const ICON_PDF  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+const ICON_WORD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>';
+
+function renderDocLibrary(id){
+  const groups = DOCLIB[id] || [];
+  const total  = groups.reduce((n,g) => n + g.docs.length, 0);
+  const base   = 'documents/' + id + '/';
+
+  document.getElementById('docs').innerHTML = `
+    <div class="notice" style="margin-bottom:26px">
+      ${ICON_PDF}
+      <p><b>These are your actual documents — ${total} of them.</b> Every one is shown here so you can see
+         exactly what reaches your tenants and when. Click any page to read it full size. Nothing here needs
+         filling in: <b>we prepare and send all of it.</b></p>
+    </div>` +
+    groups.map(g => `
+    <div class="dl-group">
+      <div class="dl-head"><h3>${g.group}</h3><span class="cnt">${g.docs.length} document${g.docs.length===1?'':'s'}</span></div>
+      <p class="dl-sub">${g.note}</p>
+      <div class="dl-grid">
+        ${g.docs.map(d => `
+        <article class="dcard">
+          <button class="dshot" data-doc="${d.slug}" data-pages="${d.pages}" data-title="${d.t.replace(/"/g,'&quot;')}"
+                  aria-label="Preview ${d.t.replace(/"/g,'&quot;')}">
+            <img src="${base}page/${d.slug}-p1.jpg" alt="First page of ${d.t.replace(/"/g,'&quot;')}" loading="lazy">
+            <span class="zoom">${ICON_ZOOM}Read all ${d.pages} page${d.pages===1?'':'s'}</span>
+          </button>
+          <span class="dpages">${d.pages} page${d.pages===1?'':'s'}</span>
+          <div class="dbody">
+            <div class="dwhen">${d.when}</div>
+            <h4>${d.t}</h4>
+            <p>${d.d}</p>
+            ${d.tag ? `<span class="dtag">${d.tag}</span>` : ''}
+          </div>
+          <div class="dfoot">
+            <a class="mini" href="${base}${d.slug}.pdf" target="_blank" rel="noopener">${ICON_PDF}PDF</a>
+            <a class="mini" href="${base}${d.slug}.docx" download>${ICON_WORD}Word</a>
+          </div>
+        </article>`).join('')}
+      </div>
+    </div>`).join('');
+
+  /* preview overlay */
+  /* Pages are shown as images rather than an embedded PDF: a PDF in an iframe
+     is unreliable on mobile Safari and needs a viewer plugin, while an <img>
+     renders everywhere. The PDF and the Word original stay one click away. */
+  const dlg = $('#dlg'), pagesEl = $('#dlgPages'), title = $('#dlgTitle'), links = $('#dlgLinks');
+  let lastFocus = null;
+  function open(slug, name, pages, btn){
+    lastFocus = btn || null;
+    title.textContent = name;
+    links.innerHTML = `<a class="mini" href="${base}${slug}.pdf" target="_blank" rel="noopener">${ICON_PDF}PDF</a>`
+                    + `<a class="mini" href="${base}${slug}.docx" download>${ICON_WORD}Word</a>`;
+    let html = '';
+    for (let i = 1; i <= pages; i++) {
+      html += `<img src="${base}page/${slug}-p${i}.jpg" alt="${name} — page ${i} of ${pages}"`
+            + `${i > 1 ? ' loading="lazy"' : ''}>`
+            + `<div class="dlg-pn">Page ${i} of ${pages}</div>`;
+    }
+    pagesEl.innerHTML = html;
+    pagesEl.scrollTop = 0;
+    dlg.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    $('#dlgX').focus();
+  }
+  function close(){
+    dlg.classList.remove('on');
+    pagesEl.innerHTML = '';               /* release the page images */
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll('#docs .dshot').forEach(b =>
+    b.addEventListener('click', () => open(b.dataset.doc, b.dataset.title, +b.dataset.pages, b)));
+  $('#dlgX').addEventListener('click', close);
+  dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && dlg.classList.contains('on')) close(); });
+}
+
 function renderDocs(manifest){
+  if (CLIENT && CLIENT.docLib) return renderDocLibrary(CLIENT.docLib);
   document.getElementById('docs').innerHTML = PROGRAMS_SHOWN.map(p => {
     const m      = (manifest && manifest.programs && manifest.programs[p.id]) || {};
     const found  = m.matched || {};
@@ -1143,6 +1359,7 @@ function renderDocs(manifest){
 renderDocs(null);
 function loadManifest(){
   try {
+    if (CLIENT && CLIENT.docLib) return;   /* library is static — no manifest needed */
     if (typeof fetch !== 'function') return;
     fetch('documents/manifest.json', {cache:'no-store'})
       .then(function(r){ return r.ok ? r.json() : null; })
