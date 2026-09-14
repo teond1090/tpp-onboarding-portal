@@ -824,7 +824,7 @@ const PROGRAMS = [
 
 const CLIENTS = {
   'protego': {
-    name:     'Protego',
+    name:     'TPP Training Videos',
     videos:   ['sec','rv'],
     programs: ['tpp-secure','rv-park-n-protect'],
     optOut:   true,
@@ -1077,12 +1077,12 @@ function nameList(names){
 
   /* Name-specific wording only ever runs on a customer link. */
   if (!CLIENT) return;
-  set('#heroKick', 'Prepared for ' + CLIENT.name);
+  set('#heroKick', CLIENT.name);
   set('#claimLines', claimSites(CLIENT.videos).map(r =>
       r.names + ': <a href="https://' + r.site + '" target="_blank" rel="noopener">' + r.site + '</a>'
     ).join('<br>'));
 
-  set('#heroLede', 'Everything the ' + CLIENT.name + ' team needs to get started is right here — your ' +
+  set('#heroLede', 'Everything your team needs to get started is right here — your ' +
       nameList(VIDEOS_SHOWN.map(v => v.title)) + ' training, examples of the documents ' +
       'we’ll prepare for you, and a direct line to your Client Success Manager. ' +
       'One link, one place, no hunting through email.');
@@ -1161,6 +1161,12 @@ function renderOptOut(){
            <a href="${mail}">${OPTOUT.email}</a>. We add policies by email exactly the same way: the tenant
            attaches a photo of their <b>declaration page</b> and we verify the carrier, policy number and
            expiration date from it.</p></div></div>
+      <div class="krow"><div class="ki">${ICON_WARN}</div>
+        <div><h4>Before a policy lapses — the expiration notice</h4>
+        <p>When a tenant&rsquo;s own policy is about to run out, we email them an expiration notice
+           from <b>${OPTOUT.site}</b>, <b>${OPTOUT.days} days before the policy expires</b>. That is
+           their cue to send us the renewed declaration page before the old one lapses &mdash; which
+           is why nobody reviews insurance records by hand.</p></div></div>
       <div class="krow"><div class="ki">${ICON_CHK}</div>
         <div><h4>For you — checking who has sent theirs in</h4>
         <p>That same address works for <b>property managers</b>. Email
