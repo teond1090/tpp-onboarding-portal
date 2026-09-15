@@ -33,12 +33,13 @@
   <h1>Layout preview &mdash; TPP Secure</h1>
   <p class="sub">The presenter is rendered on a transparent background and composited over the slide,
      so she stands on the content rather than sitting in a box &mdash; the same layout as the original
-     training videos. Press play, then click through the slides to see her against each one.</p>
+     training videos. This is the real Section 1 of the course (1:55), with the slides changing on cue
+     as she speaks. Press play and watch it through.</p>
 
   <div class="stage" id="stage">
     <img id="slide" src="slides/secure/01-title.png" alt="">
     <video id="v" playsinline controls
-      src="https://resource2.heygen.ai/aws_pacific/avatar_tmp/0fc786e7689248149b7af249dff7f69a/aee8558b6b2acae74a9ac6cb84deb8f3.webm"></video>
+      src="https://resource2.heygen.ai/aws_pacific/avatar_tmp/0fc786e7689248149b7af249dff7f69a/f63d55594e2c550a37d7ab060b5c7d94.webm"></video>
   </div>
 
   <div class="bar">
@@ -49,9 +50,10 @@
   <div class="slidebtns" id="sb"></div>
 
   <div class="note">
-    <b>What you are looking at:</b> a short transparent-background test clip of the new presenter,
-    placed over the corrected slides. The full course renders the same way, one segment per section,
-    with the slide changing on cue as she speaks.
+    <b>What you are looking at:</b> Section 1 of the TPP Secure course &mdash; the real narration, the
+    new presenter on a transparent background, and the corrected slides advancing on cue. The slides
+    follow along automatically; clicking a slide button switches to manual so you can inspect any one
+    of them. The rest of the course renders exactly this way, one segment per section.
   </div>
 </div>
 <script>
@@ -62,10 +64,24 @@ const img=document.getElementById('slide'), sb=document.getElementById('sb'), v=
 SLIDES.forEach((s,i)=>{
   const b=document.createElement('button');
   b.textContent=(i+1)+'. '+s.replace(/^\d+-/,'').replace(/-/g,' ');
-  b.onclick=()=>{img.src='slides/secure/'+s+'.png';[...sb.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');};
+  b.onclick=()=>{manual=true;img.src='slides/secure/'+s+'.png';[...sb.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');};
   if(!i)b.classList.add('on');
   sb.appendChild(b);
 });
+/* Slide cues for Section 1, as fractions of the segment runtime, matched to where
+   each point lands in the narration. */
+const CUES=[[0,'01-title'],[0.10,'02-not-insurance'],[0.42,'03-gap'],[0.68,'04-fmv']];
+let cur=-1, manual=false;
+v.addEventListener('timeupdate',()=>{
+  if(manual||!v.duration) return;
+  const f=v.currentTime/v.duration;
+  let i=0; for(let k=0;k<CUES.length;k++){ if(f>=CUES[k][0]) i=k; }
+  if(i===cur) return; cur=i;
+  img.src='slides/secure/'+CUES[i][1]+'.png';
+  [...sb.children].forEach((x,n)=>x.classList.toggle('on', SLIDES[n]===CUES[i][1]));
+});
+v.addEventListener('play',()=>{manual=false;});
+
 const modes={dock:'31%',pip:'26%',wide:'38%'};
 function setMode(k){
   v.style.width=modes[k];
