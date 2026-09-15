@@ -156,9 +156,7 @@ main.wrap{padding:34px 20px 64px}
 .pill{background:#f2f5f9;color:var(--navy);border:1px solid var(--line);border-radius:999px;
   padding:5px 12px;font-size:12.5px;font-weight:700}
 .vbody{padding:22px 24px;flex:1}
-.vdl{display:inline-flex;align-items:center;gap:6px;margin-left:16px;font-size:13px;color:var(--muted)}
-.vdl svg{width:15px;height:15px}
-.vdl a{font-weight:700}
+.vfoot .mini{margin-left:14px}
 .vbody h4{font-size:12.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
   font-weight:800;margin:0 0 11px}
 .objl{list-style:none;margin:0;padding:0}
@@ -769,9 +767,9 @@ const VIDEOS = [
     sub:'Managers Onboarding to Success',
     len:'16 min',
     url:'https://teond1090.github.io/tpp-secure-training/',
-    /* the finished video, slides and presenter composited, in five parts —
+    /* the finished video, slides and presenter composited into one file —
        for anyone who wants a file rather than the interactive course */
-    download:{ base:'https://teond1090.github.io/tpp-secure-training/media/enhanced/', parts:5 },
+    download:'https://teond1090.github.io/tpp-secure-training/media/enhanced/tpp-secure.mp4',
     desc:'Our self-storage protection plan. Covers why tenants need it even when they think they’re '
        + 'covered, how to present it without sounding like a sales pitch, and the full claims process.',
     objs:['Why a protection plan is not insurance — and why that wording matters',
@@ -784,6 +782,7 @@ const VIDEOS = [
     sub:'Managers Onboarding to Success',
     len:'17 min',
     url:'https://teond1090.github.io/tpp-rv-parknprotect-training/',
+    download:'https://teond1090.github.io/tpp-rv-parknprotect-training/media/enhanced/rv-park-n-protect.mp4',
     desc:'Protection for RVs, campers, trailers, boats and vehicles in your spaces — including the '
        + 'off-season coverage gap that catches most owners out, and how contents coverage travels with them.',
     objs:['Why most owners drop collision and comprehensive in the off season',
@@ -1325,10 +1324,7 @@ $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
     </div>
     <div class="vfoot">
       <a class="btn" href="${v.url}" target="_blank" rel="noopener">${ICON_PLAY}Open training</a>
-      ${v.download ? `<span class="vdl">${ICON_DL}Video file:` +
-          Array.from({length:v.download.parts}, (_,k) =>
-            ` <a href="${v.download.base}part-${k+1}.mp4" download>Part ${k+1}</a>`).join(' ·') +
-          `</span>` : ''}
+      ${v.download ? `<a class="mini" href="${v.download}" download>${ICON_DL}Download video</a>` : ''}
     </div>
   </article>`).join('');
 
