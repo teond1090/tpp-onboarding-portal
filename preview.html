@@ -38,14 +38,14 @@
 
   <div class="stage" id="stage">
     <img id="slide" src="slides/secure/01-title.png" alt="">
-    <video id="v" playsinline controls
+    <video id="v" playsinline controls style="width:38%"
       src="https://resource2.heygen.ai/aws_pacific/avatar_tmp/0fc786e7689248149b7af249dff7f69a/f63d55594e2c550a37d7ab060b5c7d94.webm"></video>
   </div>
 
   <div class="bar">
-    <button id="dock" class="on">Docked right (original layout)</button>
+    <button id="dock" class="on">Larger presenter (selected)</button>
     <button id="pip">Inset corner window</button>
-    <button id="wide">Larger presenter</button>
+    <button id="wide">Smaller presenter</button>
   </div>
   <div class="slidebtns" id="sb"></div>
 
@@ -82,7 +82,7 @@ v.addEventListener('timeupdate',()=>{
 });
 v.addEventListener('play',()=>{manual=false;});
 
-const modes={dock:'31%',pip:'26%',wide:'38%'};
+const modes={dock:'38%',pip:'26%',wide:'31%'};
 function setMode(k){
   v.style.width=modes[k];
   v.style.right = k==='pip' ? '14px' : '0';
