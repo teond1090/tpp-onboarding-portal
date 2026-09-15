@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Layout Preview &mdash; TPP Secure Training</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{--navy:#16233F;--red:#B01824;--line:#e3e7ee;--muted:#5d6878}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f5f7fa;font-family:"Segoe UI",system-ui,Arial,sans-serif;color:#1b2330;
+    padding:28px 20px 70px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:26px;color:var(--navy);margin-bottom:6px}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:22px;max-width:75ch;line-height:1.55}
+  /* Same staging the course player uses: slide full-frame, presenter docked right. */
+  .stage{position:relative;aspect-ratio:16/9;background:#fff;border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(20,30,50,.10)}
+  .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1}
+  .stage video{position:absolute;right:0;bottom:0;width:31%;height:auto;z-index:2;background:transparent}
+  .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+  button{font-family:inherit;font-size:14px;font-weight:700;padding:10px 18px;border-radius:9px;
+    border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer}
+  button.on{background:var(--red);color:#fff;border-color:var(--red)}
+  .slidebtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+  .slidebtns button{padding:7px 12px;font-size:12.5px;font-weight:600}
+  .note{margin-top:22px;background:#f0f5ff;border:1px solid #d3e0f7;border-left:4px solid var(--navy);
+    border-radius:11px;padding:16px 18px;font-size:14.5px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Layout preview &mdash; TPP Secure</h1>
+  <p class="sub">The presenter is rendered on a transparent background and composited over the slide,
+     so she stands on the content rather than sitting in a box &mdash; the same layout as the original
+     training videos. Press play, then click through the slides to see her against each one.</p>
+
+  <div class="stage" id="stage">
+    <img id="slide" src="slides/secure/01-title.png" alt="">
+    <video id="v" playsinline controls
+      src="https://resource2.heygen.ai/aws_pacific/avatar_tmp/0fc786e7689248149b7af249dff7f69a/aee8558b6b2acae74a9ac6cb84deb8f3.webm"></video>
+  </div>
+
+  <div class="bar">
+    <button id="dock" class="on">Docked right (original layout)</button>
+    <button id="pip">Inset corner window</button>
+    <button id="wide">Larger presenter</button>
+  </div>
+  <div class="slidebtns" id="sb"></div>
+
+  <div class="note">
+    <b>What you are looking at:</b> a short transparent-background test clip of the new presenter,
+    placed over the corrected slides. The full course renders the same way, one segment per section,
+    with the slide changing on cue as she speaks.
+  </div>
+</div>
+<script>
+const SLIDES=['01-title','02-not-insurance','03-gap','04-fmv','05-rates','06-present','07-birdseye',
+ '08-covered','09-not-covered','10-burglary','11-decpage','12-file-claim','13-claims-comm',
+ '14-claims-timing','15-optout','16-three-details','17-expiry','18-exclusion','19-billing','20-contact'];
+const img=document.getElementById('slide'), sb=document.getElementById('sb'), v=document.getElementById('v');
+SLIDES.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.textContent=(i+1)+'. '+s.replace(/^\d+-/,'').replace(/-/g,' ');
+  b.onclick=()=>{img.src='slides/secure/'+s+'.png';[...sb.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');};
+  if(!i)b.classList.add('on');
+  sb.appendChild(b);
+});
+const modes={dock:'31%',pip:'26%',wide:'38%'};
+function setMode(k){
+  v.style.width=modes[k];
+  v.style.right = k==='pip' ? '14px' : '0';
+  v.style.bottom = k==='pip' ? '14px' : '0';
+  v.style.borderRadius = k==='pip' ? '12px' : '0';
+  v.style.boxShadow = k==='pip' ? '0 8px 28px rgba(0,0,0,.35)' : 'none';
+  ['dock','pip','wide'].forEach(x=>document.getElementById(x).classList.toggle('on',x===k));
+}
+['dock','pip','wide'].forEach(k=>document.getElementById(k).onclick=()=>setMode(k));
+</script>
+</body>
+</html>
