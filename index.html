@@ -116,6 +116,32 @@ main.wrap{padding:34px 20px 64px}
 .tile p{margin:0;color:var(--muted);font-size:14.5px}
 .tile .go{margin-top:14px;color:var(--red);font-weight:700;font-size:14px}
 
+/* ---------- training path ---------- */
+/* The four steps every person takes, in order, however many courses they
+   were given. Numbered so a manager can tell their team "you're on step 3"
+   rather than describing it. */
+.path{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:24px;margin-top:22px}
+.path-h{font-size:12.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--red);
+  font-weight:800;margin:0 0 4px}
+.path-s{color:var(--muted);font-size:14.5px;margin:0 0 20px}
+.path-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.pstep{position:relative;padding:0 18px 0 0}
+.pstep+.pstep{padding-left:18px;border-left:1px solid var(--line)}
+.pstep-n{width:34px;height:34px;border-radius:10px;background:var(--navy);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:14.5px;margin-bottom:11px}
+.pstep-t{font-size:15px;color:var(--navy);font-weight:800;margin:0 0 5px}
+.pstep-d{font-size:13.5px;color:var(--muted);margin:0}
+.pstep.done .pstep-n{background:var(--ok)}
+@media(max-width:860px){
+  .path-steps{grid-template-columns:1fr 1fr;gap:20px 0}
+  .pstep:nth-child(odd){padding-left:0;border-left:0}
+}
+@media(max-width:520px){
+  .path-steps{grid-template-columns:1fr;gap:18px}
+  .pstep{padding-left:0 !important;border-left:0 !important}
+}
+
 /* ---------- video cards ---------- */
 .vcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
@@ -591,6 +617,8 @@ footer a{color:#cdd6e6}
        so your training record builds itself.</p>
   </div>
 
+  <div id="path"></div>
+
   <div class="sect grid" id="vids" style="gap:22px"></div>
   <div id="optout"></div>
 </section>
@@ -831,7 +859,7 @@ const PROGRAMS = [
    To add a customer:
      1. copy one of the blocks below and give it a new id
      2. list the programs they run, using the ids from the two lists above
-     3. duplicate the  protego  folder, rename it to the new id, and
+     3. duplicate the  training  folder, rename it to the new id, and
         change the id inside its index.html
    That gives them a short link of their own:
         https://teond1090.github.io/tpp-onboarding-portal/their-id/
@@ -845,18 +873,16 @@ const PROGRAMS = [
    ===================================================================== */
 
 const CLIENTS = {
-  'protego': {
+  'tpp': {
     name:     'TPP Training Videos',
     videos:   ['sec','rv'],
     programs: ['tpp-secure','rv-park-n-protect'],
     optOut:   true,
-    docLib:   'protego',
-    /* Protego is All Purpose Storage's own brand for the storage plan, and it
-       files claims at its own address — both addendums and the plan terms say
-       so. RV is left on the standard site: nothing in their document pack
-       covers it. */
-    claims:   { sec: 'protegoclaims.com' } }
+    docLib:   'tpp' }
 };
+/* Links already shared point at ?client=protego. Alias it rather than break
+   them: same configuration, same page, TPP branding throughout. */
+CLIENTS['protego'] = CLIENTS['tpp'];
 
 /* Per-program wording, used to rebuild the few sentences that name every
    program — the claims contacts and Meredith's program answers — so a
@@ -934,17 +960,17 @@ function claimSites(progIds){
    ===================================================================== */
 
 const DOCLIB = {
-  protego: [
+  tpp: [
     { group:'Before launch',
       note:'Sent once, to tenants who are already renting when the program starts. '
          + 'We draft them and send them to you for approval — they go out from your own software.',
       docs:[
         { slug:'prelaunch-letter', pages:3, t:'Pre-Launch Announcement', when:'Before launch',
-          d:'Introduces the Protego Protection Program to existing tenants and explains what is '
+          d:'Introduces the protection program to existing tenants and explains what is '
            + 'changing and when. Merge fields for facility name, tenant name and the start date.' },
         { slug:'transition-letter', pages:2, t:'Transition Letter', when:'Before launch',
           d:'For tenants moving across from a previous provider. Confirms their existing coverage '
-           + 'level carries over to the equivalent Protego plan at no extra cost.' } ]},
+           + 'level carries over to the equivalent protection plan at no extra cost.' } ]},
 
     { group:'The launch month',
       note:'The two letters that run the first month, built around the 30-day free trial.',
@@ -987,7 +1013,7 @@ const DOCLIB = {
           d:'The signable version of the updated $14 addendum, with no watermark.' },
         { slug:'terms', pages:5, t:'Customer Protection Plan Terms', when:'Always available',
           d:'The full protection plan terms — covered perils, exclusions, limits, the $250 burglary '
-           + 'deductible and the claims process. Also online at protegotermsconditions.com.' } ]}
+           + 'deductible and the claims process.' } ]}
   ]
 };
 
@@ -1234,6 +1260,43 @@ function renderOptOut(){
 }
 if (CLIENT && CLIENT.optOut) renderOptOut();
 
+/* ---------- the training path ---------- */
+/* Written from VIDEOS_SHOWN so the wording follows whatever courses this
+   link actually shows — one course reads "the course", two read "both". */
+(function renderPath(){
+  const el = $('#path'); if (!el) return;
+  const n     = VIDEOS_SHOWN.length;
+  const titles= VIDEOS_SHOWN.map(v => v.title);
+  const orList= titles.length < 2 ? (titles[0] || '')
+              : titles.slice(0,-1).join(', ') + ' or ' + titles[titles.length-1];
+  const steps = [
+    { t:'Open your course',
+      d:(n === 1 ? 'Open ' + titles[0] + '.'
+                 : 'Open the one that matches the program you run \u2014 ' + orList + '.') +
+        ' It opens in a new tab and remembers where you left off.' },
+    { t:'Watch it through',
+      d:'Pause, rewind and fast-forward freely. The video stops at each knowledge check until it\u2019s answered.' },
+    { t:'Pass the knowledge checks',
+      d:'Five checks and twenty questions per course, spread through the video rather than saved for the end. ' +
+        'The final one covers the tenant opt-out process.' },
+    { t:'Certificate & report',
+      d:'Print the completion certificate, then hit \u201cReport my completion\u201d so it reaches your training record.' }
+  ];
+  el.innerHTML = '<div class="path">'
+    + '<p class="path-h">Your training path</p>'
+    + '<p class="path-s">Four steps, about ' +
+        (n === 1 ? VIDEOS_SHOWN[0].len : 'twenty minutes per course') +
+        ' of your time. Work through them in order.</p>'
+    + '<div class="path-steps">'
+    + steps.map((st,i) => `
+        <div class="pstep">
+          <div class="pstep-n">${i+1}</div>
+          <p class="pstep-t">${st.t}</p>
+          <p class="pstep-d">${st.d}</p>
+        </div>`).join('')
+    + '</div></div>';
+})();
+
 /* videos */
 $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
   <article class="vcard">
@@ -1245,7 +1308,7 @@ $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
         <p class="vdesc">${v.desc}</p>
         <div class="vmeta">
           <span class="pill">${v.len}</span>
-          <span class="pill">4 knowledge checks</span>
+          <span class="pill">5 knowledge checks</span>
           <span class="pill">Completion certificate</span>
         </div>
       </div>
@@ -1670,7 +1733,7 @@ const MEREDITH = {
   /* ---------- training ---------- */
   { id:'training-first', t:'Which training video should we watch?',
     k:['which video','which training','what should i watch','training first','where do i start','courses','video'],
-    a:"Watch the one that matches <b>your</b> program — that's the only one you strictly need. If you offer more than one plan, work through each in any order.<br><br>Each runs under 20 minutes, pauses at four short knowledge checks, and ends with a printable certificate. Not sure which program you're on? Teon can confirm it in a moment.",
+    a:"Watch the one that matches <b>your</b> program — that's the only one you strictly need. If you offer more than one plan, work through each in any order.<br><br>Each runs under 20 minutes, pauses at five short knowledge checks, and ends with a printable certificate. Not sure which program you're on? Teon can confirm it in a moment.",
     chips:['who-trains','certificate','contact'] },
 
   { id:'who-trains', t:'Who needs to complete the training?',
