@@ -268,4 +268,4 @@ add('20-contact', f"""<img class='brand' src='{LOGO}'>
 out=pathlib.Path(os.path.dirname(os.path.abspath(__file__)))/'html-secure'; out.mkdir(exist_ok=True)
 for n,h in S: (out/f"{n}.html").write_text(h, encoding='utf-8')
 print("wrote", len(S), "slides")
-json.dump([n for n,_ in S], open(out.parent/'slide_names.json','w'))
+

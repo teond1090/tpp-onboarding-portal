@@ -1,7 +1,7 @@
-import asyncio, json, sys, pathlib
+import asyncio, sys, pathlib
 from playwright.async_api import async_playwright
 html_dir, out_dir = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
-names = json.load(open(html_dir.parent/'slide_names.json')) if (html_dir.parent/'slide_names.json').exists() else [p.stem for p in sorted(html_dir.glob('*.html'))]
+names = [p.stem for p in sorted(html_dir.glob('*.html'))]   # files are numbered, so sorted order is deck order
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path="/opt/pw-browsers/chromium")
