@@ -45,14 +45,27 @@ jobs:
             # the portal shows one ~1000px-wide JPG per page
             rm -f "$FOLDER"/page/"$stem"-p*.jpg
             pdftoppm -jpeg -r 150 -scale-to-x 1000 -scale-to-y -1 "$pdf" "$FOLDER/page/$stem-p"
-            for p in "$FOLDER"/page/"$stem"-p*.jpg; do
-              mv "$p" "$(echo "$p" | sed -E 's/-p0*([0-9]+)\.jpg$/-p\1.jpg/')" 2>/dev/null || true
+            # pdftoppm appends "-N" to the prefix, giving "<stem>-p-1.jpg"; the
+            # portal asks for "<stem>-p1.jpg", so drop that hyphen and any
+            # zero padding
+            for p in "$FOLDER"/page/"$stem"-p-*.jpg; do
+              [ -e "$p" ] || continue
+              mv "$p" "$(echo "$p" | sed -E 's/-p-0*([0-9]+)\.jpg$/-p\1.jpg/')"
             done
             echo "  $(pdfinfo "$pdf" | awk '/^Pages/{print $2}') page(s)"
             echo "::endgroup::"
           done
           echo "--- page counts ---"
-          for f in "$FOLDER"/*.pdf; do echo "$(basename "$f" .pdf): $(pdfinfo "$f" | awk '/^Pages/{print $2}')"; done
+          bad=0
+          for f in "$FOLDER"/*.pdf; do
+            stem=$(basename "$f" .pdf); n=$(pdfinfo "$f" | awk '/^Pages/{print $2}')
+            echo "$stem: $n"
+            # the portal links <stem>-p1.jpg .. -pN.jpg; a missing one is a broken image
+            for i in $(seq 1 "$n"); do
+              [ -f "$FOLDER/page/$stem-p$i.jpg" ] || { echo "::error::missing $FOLDER/page/$stem-p$i.jpg"; bad=1; }
+            done
+          done
+          [ "$bad" = 0 ] || exit 1
 
       - name: Commit
         run: |
