@@ -51,6 +51,27 @@ def rewrite(text):
     return text
 
 
+def own_texts(p):
+    """The <w:t> elements this paragraph owns directly.
+
+    A text box lives inside a run, and its own paragraphs hang below that, so
+    a plain p.iter() walk reaches the text box's text from the outer paragraph
+    *and* again from the nested paragraph — applying every replacement twice.
+    Descending stops at a nested <w:p> so each piece of text is visited once.
+    """
+    out = []
+    def walk(node):
+        for ch in node:
+            if ch.tag == W + "p":
+                continue
+            if ch.tag == W + "t":
+                out.append(ch)
+            else:
+                walk(ch)
+    walk(p)
+    return out
+
+
 def rewrite_paragraph(p):
     """Rewrite one <w:p>, returning how many replacements it made.
 
@@ -62,7 +83,7 @@ def rewrite_paragraph(p):
     are dropped from wherever else they sat, so formatting outside the matched
     spans is untouched.
     """
-    ts = [t for r in p.iter(W + "r") for t in r.iter(W + "t")]
+    ts = own_texts(p)
     if not ts:
         return 0
     texts = [t.text or "" for t in ts]

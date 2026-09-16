@@ -1001,14 +1001,17 @@ const DOCLIB = {
            + 'the charge is now on their rent.' } ]},
 
     { group:'Forms and terms',
-      note:'What the tenant signs, and what they can read. One addendum now covers both programs — '
-         + 'the tenant selects their space type on it, and the plan under that type.',
+      note:'What the tenant signs, and what they can read. There is one addendum per program — use '
+         + 'the one that matches the space the tenant is renting.',
       docs:[
-        { slug:'addendum', pages:6, t:'Combined Protection Plan Addendum', when:'Signed at rental', tag:'Both programs',
-          d:'The one form a tenant signs, covering both programs: they pick the space type — enclosed '
-           + 'unit (TPP) or vehicle, RV and boat parking (RV Park \u2018n\u2019 Protect) — then the '
-           + 'coverage level under it. Also carries the private-insurance opt-out, the vehicle details '
-           + 'for a parking space, the photo and documentation authorization, and both claim portals.' },
+        { slug:'addendum-tpp-secure', pages:2, t:'TPP Secure Addendum', when:'Signed at rental', tag:'Enclosed units',
+          d:'The tenant responsibility addendum for an enclosed storage unit. Records the coverage '
+           + 'level chosen — $12 for $2,000, $15 for $3,000, $25 for $5,000 — lists the covered '
+           + 'losses, and carries the insurance obligation clause and the claim contact.' },
+        { slug:'addendum-rv-park-n-protect', pages:2, t:'RV Park \u2018n\u2019 Protect Addendum', when:'Signed at rental', tag:'Vehicle spaces',
+          d:'The addendum for a vehicle, RV or boat space. Alongside the protection limit it records '
+           + 'the contents coverage and the additional vehicle parts coverage — each half the plan '
+           + 'limit — and the licence plates of every vehicle kept in the space.' },
         { slug:'terms', pages:5, t:'Customer Protection Plan Terms', when:'Always available',
           d:'The full protection plan terms — covered perils, exclusions, limits, the $250 burglary '
            + 'deductible and the claims process.' } ]}
