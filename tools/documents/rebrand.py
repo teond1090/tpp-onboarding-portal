@@ -23,26 +23,36 @@ from xml.etree import ElementTree as ET
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 ET.register_namespace("w", W[1:-1])
 
-# Longest first: a specific phrase must win over a shorter one inside it.
+# Matched case-insensitively, longest match at each position winning, so rule
+# order cannot mis-rank them. The tenant letters shout the brand — "PROTEGO
+# Protection" — which an earlier case-sensitive pass walked straight past.
 RULES = [
-    (r"www\.ProtegoClaims\.com",            "tppclaims.com"),
-    (r"https?://www\.ProtegoClaims\.com",   "https://tppclaims.com"),
-    (r"https?://protegotermsconditions\.com", "https://tpptermsandconditions.com"),
-    (r"www\.protegotermsconditions\.com",   "tpptermsandconditions.com"),
-    (r"protegotermsconditions\.com",        "tpptermsandconditions.com"),
-    (r"Protegoclaims\.com",                 "tppclaims.com"),
-    (r"ProtegoClaims\.com",                 "tppclaims.com"),
-    (r"Protego\s*CUSTOMER PROTECTION PLAN", "TPP SECURE CUSTOMER PROTECTION PLAN"),
-    (r"ProtegoSECURE",                      "TPP SECURE"),
-    (r"Protego Protection Plan",            "TPP Secure Protection Plan"),
-    (r"Protego Secure Addendum",            "TPP Secure Addendum"),
-    (r"Protego Claims",                     "TPP Claims"),
-    (r"Protego Plan",                       "TPP Secure Plan"),
-    # Anything left standing alone is the company itself.
-    (r"Protego",                            "Tenant Property Protection"),
+    (r"PROTEGOTermsConditions\.com",      "TPPTermsAndConditions.com", True),
+    (r"protegotermsconditions\.com",      "tpptermsandconditions.com", False),
+    (r"https?://protegotermsconditions\.com", "https://tpptermsandconditions.com", False),
+    (r"www\.protegotermsconditions\.com",  "tpptermsandconditions.com", False),
+    (r"PROTEGOClaims\.com",               "TPPClaims.com",             True),
+    (r"www\.ProtegoClaims\.com",           "tppclaims.com",             False),
+    (r"https?://www\.ProtegoClaims\.com",  "https://tppclaims.com",     False),
+    (r"Protegoclaims\.com",               "tppclaims.com",             False),
+    # "an PROTEGO claim" was never grammatical; fix it while the brand changes
+    (r"an\s+PROTEGO\b",                   "a TPP Secure",              True),
+    (r"Protego\s*CUSTOMER PROTECTION PLAN","TPP SECURE CUSTOMER PROTECTION PLAN", True),
+    (r"ProtegoSECURE",                    "TPP SECURE",                True),
+    (r"Protego Protection Program",       "TPP Secure Protection Program", True),
+    (r"Protego Protection Plan",          "TPP Secure Protection Plan", True),
+    (r"Protego Protection",               "TPP Secure Protection",     True),
+    (r"Protego Secure Addendum",          "TPP Secure Addendum",       True),
+    (r"Protego Claims",                   "TPP Claims",                True),
+    (r"Protego Plan",                     "TPP Secure Plan",           True),
+    (r"Protego terms",                    "TPP Secure terms",          True),
+    (r"Protego",                          "TPP Secure",                True),
+    # These are templates, so no single operator or facility is named on them.
+    (r"\[All Purpose Facility Name\]",    "[Facility Name]",           False),
+    (r"All Purpose Storage",              "[Company Name]",            False),
 ]
-PATTERNS = [(re.compile(p), r) for p, r in RULES]
-HIT = re.compile(r"[Pp]rotego")
+PATTERNS = [(re.compile(p, re.I if ci else 0), r) for p, r, ci in RULES]
+HIT = re.compile(r"protego|All Purpose", re.I)
 
 
 def rewrite(text):
