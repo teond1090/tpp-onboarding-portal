@@ -70,7 +70,7 @@ add('03-covers', """<div class='kick'>What the program covers</div>
 <h1>Whatever is in the space</h1>
 <div class='lede'>RVs, campers, trailers, boats, cars and trucks &mdash; indoors or out, covered or uncovered.</div>
 <div class='grid'>
- <div class='tile'><b>Contents travel</b><span>From $350, covered <b>on-site and off-site</b> &mdash; even on a weekend away.</span></div>
+ <div class='tile'><b>Contents travel</b><span><b>Half the plan limit</b>, covered <b>on-site and off-site</b> &mdash; even on a weekend away.</span></div>
  <div class='tile'><b>Second vehicle</b><span>A car left in the space while the RV is out is covered. List it on the addendum.</span></div>
  <div class='tile'><b>Deductible reimbursement</b><span>The plan effectively covers a tenant&rsquo;s auto deductible.</span></div>
 </div>""",
@@ -96,7 +96,7 @@ add('05-present', """<div class='kick'>Lead with these</div>
    <div class='d'>&ldquo;Would you like a protection plan?&rdquo; invites a no. This moves the conversation forward.</div></div></div>
  <div class='row'><div class='ic'>2</div><div><div class='t'>Look at what they are actually parking</div>
    <div class='d'>A fishing boat and a forty-foot motorhome are two very different conversations.</div></div></div>
- <div class='row'><div class='ic'>3</div><div><div class='t'>$13 a month vs a $1,000 deductible</div>
+ <div class='row'><div class='ic'>3</div><div><div class='t'>$12 a month vs a $1,000 deductible</div>
    <div class='d'>The plan effectively pays their auto deductible for them. That is the whole pitch.</div></div></div>
 </div>""",
 "Presenting")
@@ -109,7 +109,7 @@ add('06-covered', """<div class='kick'>Know this cold</div>
  <div class='tile'><b>Burglary damage</b><span>Police report required</span></div>
  <div class='tile'><b>Vandalism</b></div>
  <div class='tile'><b>Building collapse</b></div>
- <div class='tile'><b>Contents theft</b><span>On-site and off-site, from $350</span></div>
+ <div class='tile'><b>Contents theft</b><span>On-site and off-site, half the plan limit</span></div>
  <div class='tile'><b>Stolen attached parts</b><span>The part itself, up to the plan sublimit &mdash; not the labor to install it</span></div>
  <div class='tile'><b>Deductible reimbursement</b><span>Covers the tenant&rsquo;s auto deductible</span></div>
 </div>""",
