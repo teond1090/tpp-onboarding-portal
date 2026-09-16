@@ -265,6 +265,32 @@ add('20-contact', f"""<img class='brand' src='{LOGO}'>
 <li>Monday&ndash;Friday, 7:00 AM &ndash; 5:30 PM Arizona time</li></ul>
 <div class='sub' style='font-size:28px;margin-top:30px'>Training support is always free, and there is no limit on it.</div>""")
 
+add('21-addendum', f"""<img class='brand' src='{LOGO}'>
+<div class='kick'>What the tenant signs</div>
+<h1>The Tenant Responsibility Addendum</h1>
+<div class='sub'>One page that does three jobs &mdash; and the signature is the one that protects you.</div>
+<div class='steps'>
+  <div class='step'><div class='n'>1</div><p><b>Records the level they chose</b><br>$2,000 at $12, $3,000 at $15,
+    or $5,000 at $25 a month &mdash; initialled on that line</p></div>
+  <div class='step'><div class='n'>2</div><p><b>Lists what the plan covers</b><br>Printed on the page the tenant
+    is signing, so there is no argument later</p></div>
+  <div class='step'><div class='n'>3</div><p><b>Proves it was offered</b><br>Signed whether they take the plan or
+    show their own policy. Retained with the lease</p></div>
+</div>
+<div class='warn'>&ldquo;Nobody ever offered me that.&rdquo; The signed addendum in the file is the answer.</div>""")
+
+add('22-addendum-detail', f"""<img class='brand' src='{LOGO}'>
+<div class='kick'>Two details to know by heart</div>
+<h1>Burglary, water &mdash; and the inventory</h1>
+<ul>
+<li><b>Burglary</b> must show <b>visible signs of forced entry</b> and be reported to the police and to you.
+    A <b>disc or cylinder lock waives the burglary deductible</b> &mdash; worth saying when a tenant buys a lock.</li>
+<li><b>Water damage does not include flood or surface water.</b> That is the National Flood Program, not this plan.</li>
+<li><b>The inventory is the tenant&rsquo;s responsibility.</b> They keep the list, the photos and the receipts &mdash;
+    that is what establishes a baseline if they ever claim.</li>
+</ul>
+<div class='warn'>Rodent damage is covered on this addendum too &mdash; up to a $500 sublimit.</div>""")
+
 out=pathlib.Path(os.path.dirname(os.path.abspath(__file__)))/'html-secure'; out.mkdir(exist_ok=True)
 for n,h in S: (out/f"{n}.html").write_text(h, encoding='utf-8')
 print("wrote", len(S), "slides")

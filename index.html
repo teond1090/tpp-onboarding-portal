@@ -1279,8 +1279,8 @@ if (CLIENT && CLIENT.optOut) renderOptOut();
     { t:'Watch it through',
       d:'Pause, rewind and fast-forward freely. The video stops at each knowledge check until it\u2019s answered.' },
     { t:'Pass the knowledge checks',
-      d:'Five checks and twenty questions per course, spread through the video rather than saved for the end. ' +
-        'The final one covers the tenant opt-out process.' },
+      d:'Six checks and twenty-four questions per course, spread through the video rather than saved for the end. ' +
+        'One covers the addendum the tenant signs; the last covers the opt-out process.' },
     { t:'Certificate & report',
       d:'Print the completion certificate, then hit \u201cReport my completion\u201d so it reaches your training record.' }
   ];
@@ -1310,7 +1310,7 @@ $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
         <p class="vdesc">${v.desc}</p>
         <div class="vmeta">
           <span class="pill">${v.len}</span>
-          <span class="pill">5 knowledge checks</span>
+          <span class="pill">6 knowledge checks</span>
           <span class="pill">Completion certificate</span>
         </div>
       </div>
@@ -1736,7 +1736,7 @@ const MEREDITH = {
   /* ---------- training ---------- */
   { id:'training-first', t:'Which training video should we watch?',
     k:['which video','which training','what should i watch','training first','where do i start','courses','video'],
-    a:"Watch the one that matches <b>your</b> program — that's the only one you strictly need. If you offer more than one plan, work through each in any order.<br><br>Each runs under 20 minutes, pauses at five short knowledge checks, and ends with a printable certificate. Not sure which program you're on? Teon can confirm it in a moment.",
+    a:"Watch the one that matches <b>your</b> program — that's the only one you strictly need. If you offer more than one plan, work through each in any order.<br><br>Each runs under 20 minutes, pauses at six short knowledge checks, and ends with a printable certificate. Not sure which program you're on? Teon can confirm it in a moment.",
     chips:['who-trains','certificate','contact'] },
 
   { id:'who-trains', t:'Who needs to complete the training?',

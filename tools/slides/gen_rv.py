@@ -79,13 +79,14 @@ add('03-covers', """<div class='kick'>What the program covers</div>
 add('04-pricing', """<div class='kick'>Example plan options</div>
 <h1>Sample coverage &amp; pricing</h1>
 <table>
-<tr><th>Protection Limit</th><th>Contents Coverage</th><th>Monthly Fee</th></tr>
-<tr><td>$1,000</td><td style='font-weight:400;color:#5d6878'>$350 on-site and off-site</td><td class='fee'>$13.00</td></tr>
-<tr><td>$1,500</td><td style='font-weight:400;color:#5d6878'>$500 on-site and off-site</td><td class='fee'>$18.00</td></tr>
-<tr><td>$2,500</td><td style='font-weight:400;color:#5d6878'>$1,000 on-site and off-site</td><td class='fee'>$25.00</td></tr>
+<tr><th>Protection Limit</th><th>Contents</th><th>Vehicle Parts</th><th>Monthly Fee</th></tr>
+<tr><td>$1,000</td><td style='font-weight:400;color:#5d6878'>$500</td><td style='font-weight:400;color:#5d6878'>$500</td><td class='fee'>$12.00</td></tr>
+<tr><td>$1,500</td><td style='font-weight:400;color:#5d6878'>$750</td><td style='font-weight:400;color:#5d6878'>$750</td><td class='fee'>$15.00</td></tr>
+<tr><td>$2,500</td><td style='font-weight:400;color:#5d6878'>$1,250</td><td style='font-weight:400;color:#5d6878'>$1,250</td><td class='fee'>$25.00</td></tr>
 </table>
-<div class='note'>These figures are an <b>example</b>, not a fixed rate card. Coverage levels and pricing are flexible &mdash;
-we can accommodate most customer needs and requests. Billed with the rent, and the plan ends automatically when the tenant moves out.</div>""",
+<div class='note'>Contents and vehicle parts coverage are each <b>half the protection limit</b>, and both apply
+<b>on-site and off-site</b>. Coverage levels and pricing are flexible &mdash; we can accommodate most customer needs and
+requests. Billed with the rent, and the plan ends automatically when the tenant moves out.</div>""",
 "Plans &amp; Pricing")
 
 add('05-present', """<div class='kick'>Lead with these</div>
@@ -249,6 +250,36 @@ add('18-contact', """<div class='kick'>You&rsquo;ve got questions? We&rsquo;ve g
 </div>
 <div class='note' style='margin-top:20px'>Training support is always free, and there is no limit on it.</div>""",
 "Support")
+
+add('19-addendum', """<div class='kick'>What the tenant signs</div>
+<h1>The RV Park &lsquo;n&rsquo; Protect addendum</h1>
+<div class='lede'>One page. It records the space, the vehicles in it, and the level of protection chosen.</div>
+<div class='rows'>
+ <div class='row'><div class='ic'>1</div><div><div class='t'>The protection limit they chose</div>
+   <div class='d'>$1,000, $1,500 or $2,500 &mdash; initialled on that line.</div></div></div>
+ <div class='row'><div class='ic'>2</div><div><div class='t'>Every vehicle and licence plate in the space</div>
+   <div class='d'>Written on the addendum. This is what a claim is validated against.</div></div></div>
+ <div class='row'><div class='ic'>3</div><div><div class='t'>Their signature</div>
+   <div class='d'>Proof the plan was offered. Retained with the lease either way.</div></div></div>
+</div>
+<div class='flag'>Burglary still needs visible signs of forced entry and a police report.</div>""",
+"The Addendum")
+
+add('20-addendum-sublimits', """<div class='kick'>The two numbers tenants ask about</div>
+<h1>Contents and vehicle parts &mdash; <em>half</em> the limit</h1>
+<table>
+<tr><th>Protection Limit</th><th>Contents Coverage</th><th>Vehicle Parts Coverage</th></tr>
+<tr><td>$1,000</td><td class='fee'>$500</td><td class='fee'>$500</td></tr>
+<tr><td>$1,500</td><td class='fee'>$750</td><td class='fee'>$750</td></tr>
+<tr><td>$2,500</td><td class='fee'>$1,250</td><td class='fee'>$1,250</td></tr>
+</table>
+<div class='rows' style='margin-top:34px'>
+ <div class='row'><div class='ic'>&#10003;</div><div><div class='t'>Contents are covered off-site too</div>
+   <div class='d'>Stolen items from inside the stored property &mdash; on your lot or away from it.</div></div></div>
+ <div class='row'><div class='ic'>&#10003;</div><div><div class='t'>So are stolen vehicle parts</div>
+   <div class='d'>Replacement up to the parts sublimit, on-site and off-site.</div></div></div>
+</div>""",
+"The Addendum")
 
 for n,h in S: (OUT/f"{n}.html").write_text(h, encoding='utf-8')
 print("wrote", len(S), "RV slides")
