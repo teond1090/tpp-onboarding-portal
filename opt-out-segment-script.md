@@ -1,4 +1,4 @@
-# TPP Secure / Protego — Opt-Out Segment
+# TPP Secure — Opt-Out Segment
 
 Script for a new segment to be recorded and spliced into the manager training
 course. Written to match the presenter's existing tone: direct, practical, aimed
