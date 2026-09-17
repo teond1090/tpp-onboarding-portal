@@ -29,7 +29,7 @@ td.fee{color:#15944B;font-weight:800}
 .note{font-size:27px;color:#5d6878;margin-top:26px;line-height:1.4}
 .grid{display:flex;flex-wrap:wrap;gap:26px;margin-top:50px}
 .tile{flex:0 0 calc((100% - 52px)/3);min-width:0;background:#f4f8f5;border-radius:18px;padding:30px 28px}  /* exactly three across the 1160px text column */
-.tile b{display:block;font-size:31px;color:#0c3b22;margin-bottom:10px}
+.tile > b{display:block;font-size:31px;color:#0c3b22;margin-bottom:10px}
 .tile span{font-size:26px;color:#5d6878;line-height:1.3}
 .flag{margin-top:46px;background:#fff5d6;border-left:12px solid #e0b23c;border-radius:14px;
   padding:32px 38px;font-size:32px;color:#1b2330;line-height:1.35}
