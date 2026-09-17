@@ -1,0 +1,75 @@
+name: Fetch a partner logo
+
+# The authoring sandbox cannot reach the open internet, but this runner can.
+# Give it a partner's site and it pulls down every image on the page into
+# media/partners/_candidates/ so the right one can be picked by eye.
+on:
+  workflow_dispatch:
+    inputs:
+      site:
+        description: "Partner website to pull images from"
+        required: true
+        default: "https://sscg1.com/"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull the page and every image on it
+        env:
+          SITE: ${{ inputs.site }}
+        run: |
+          python3 - <<'PY'
+          import os, re, pathlib, urllib.parse, urllib.request
+
+          site = os.environ["SITE"]
+          out  = pathlib.Path("media/partners/_candidates")
+          out.mkdir(parents=True, exist_ok=True)
+          req  = lambda u: urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
+
+          html = urllib.request.urlopen(req(site), timeout=30).read().decode("utf-8", "replace")
+          print(f"fetched {site}: {len(html)} bytes")
+
+          urls = set()
+          for pat in (r'<img[^>]+src=["\']([^"\']+)',
+                      r'<img[^>]+srcset=["\']([^"\']+)',
+                      r'background-image:\s*url\((["\']?)([^)"\']+)',
+                      r'<link[^>]+rel=["\'][^"\']*icon[^"\']*["\'][^>]+href=["\']([^"\']+)'):
+              for m in re.finditer(pat, html, re.I):
+                  raw = m.group(m.lastindex)
+                  for part in raw.split(","):
+                      u = part.strip().split(" ")[0]
+                      if u and not u.startswith("data:"):
+                          urls.add(urllib.parse.urljoin(site, u))
+
+          print(f"{len(urls)} image URLs found")
+          kept = 0
+          for u in sorted(urls):
+              name = re.sub(r"[^A-Za-z0-9._-]", "_", urllib.parse.urlparse(u).path.rsplit("/", 1)[-1] or "img")
+              if "." not in name:
+                  name += ".img"
+              try:
+                  data = urllib.request.urlopen(req(u), timeout=30).read()
+              except Exception as e:
+                  print(f"  skip {u}: {e}"); continue
+              if not (200 < len(data) < 4_000_000):
+                  print(f"  skip {u}: {len(data)} bytes"); continue
+              (out / name).write_bytes(data)
+              print(f"  saved {name:<44} {len(data):>8} bytes   <- {u}")
+              kept += 1
+          print(f"{kept} images saved to {out}")
+          PY
+
+      - name: Commit what it found
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A media/partners/
+          git diff --cached --quiet && { echo "nothing new"; exit 0; }
+          git commit -m "Fetch partner logo candidates from the partner site"
+          git push
