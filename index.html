@@ -31,13 +31,17 @@ header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0
 /* a partner's mark sits beside the TPP logo, never instead of it */
 .plogo{height:38px}
 /* the partner's mark on the home page, above the welcome */
-.partnerbar{display:flex;align-items:center;gap:16px;margin-bottom:22px}
-.partnerbar img{height:62px;width:auto}
-.partnerbar .pfor{font-size:12.5px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--muted);font-weight:800;line-height:1.5}
-.partnerbar .pfor b{display:block;color:var(--navy);font-size:15px;letter-spacing:.02em;
+.partnerbar{display:flex;align-items:center;gap:18px;margin-bottom:24px;position:relative}
+/* the mark sits on white inside the hero: these logos carry black type, which
+   would disappear against a dark panel */
+.partnerbar img{height:54px;width:auto;background:#fff;padding:11px 15px;border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.partnerbar .pfor{font-size:12px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);font-weight:800;line-height:1.5}
+.partnerbar .pfor b{display:block;color:#fff;font-size:15px;letter-spacing:.02em;
   text-transform:none;font-weight:800}
-@media (max-width:600px){.partnerbar img{height:48px}}
+@media (max-width:600px){.partnerbar{gap:13px}.partnerbar img{height:40px;padding:9px 12px}
+  .partnerbar .pfor{font-size:11px}.partnerbar .pfor b{font-size:13.5px}}
 .bdiv{width:1px;height:32px;background:var(--line);flex:none;margin:0 3px}
 .brandtxt{font-size:12.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;
   font-weight:700;border-left:1px solid var(--line);padding-left:16px;line-height:1.35}
@@ -1216,8 +1220,9 @@ function nameList(names){
     probe2.src = CLIENT.partnerLogo;
   }
   if (CLIENT.partner) {
-    set('.brandtxt', '<b>Manager Training Portal</b>For ' + CLIENT.partner +
-        ' &middot; by Tenant Property Protection');
+    /* short on purpose: both marks are already in the strip, so naming the
+       partner here as well pushed it onto a second line */
+    set('.brandtxt', '<b>Manager Training Portal</b>by Tenant Property Protection');
   }
 
   /* A partner's colours, applied as a stylesheet added at run time rather than
