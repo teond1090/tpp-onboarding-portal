@@ -30,6 +30,14 @@ header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0
 .logo{height:46px;width:auto;flex:none}
 /* a partner's mark sits beside the TPP logo, never instead of it */
 .plogo{height:38px}
+/* the partner's mark on the home page, above the welcome */
+.partnerbar{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.partnerbar img{height:62px;width:auto}
+.partnerbar .pfor{font-size:12.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);font-weight:800;line-height:1.5}
+.partnerbar .pfor b{display:block;color:var(--navy);font-size:15px;letter-spacing:.02em;
+  text-transform:none;font-weight:800}
+@media (max-width:600px){.partnerbar img{height:48px}}
 .bdiv{width:1px;height:32px;background:var(--line);flex:none;margin:0 3px}
 .brandtxt{font-size:12.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;
   font-weight:700;border-left:1px solid var(--line);padding-left:16px;line-height:1.35}
@@ -886,6 +894,10 @@ const PROGRAMS = [
      partner     – a partner running this training for their own managers
      partnerLogo – their mark, shown beside the TPP logo, never instead of it.
                    Leave it out and the header is TPP's alone, as it always was.
+     theme       – their colours, applied to their link only, as a stylesheet
+                   added at run time. Leave it out and the portal is TPP navy.
+     headline    – replaces the home page's welcome line
+     lede        – replaces the paragraph under it
    ===================================================================== */
 
 const CLIENTS = {
@@ -903,6 +915,17 @@ const CLIENTS = {
     name:       'Self Storage Consulting Group',
     partner:    'Self Storage Consulting Group',
     partnerLogo:'media/partners/self-storage-consulting-group.png',
+    /* their own colours, read off the logo: the vivid red of the arrows, the
+       near-black of "CONSULTING GROUP", the silver of the cube. */
+    theme:    { dark:'#231F20', dark2:'#3c3739', mid:'#575052',
+                red:'#CC2229', redDark:'#9E1A20',
+                glow:'rgba(204,34,41,.34)', eyebrow:'#ff9a9f' },
+    headline: 'Manager Training for Self Storage Consulting Group',
+    lede:     'Everything your trainer needs to certify your managers on the ' +
+              'TPP Secure and RV Park \u2018n\u2019 Protect programs \u2014 the full ' +
+              'courses with built-in knowledge checks and printable certificates, ' +
+              'examples of every document your teams will handle, and a direct ' +
+              'line to your Client Success Manager.',
     videos:     ['sec','rv'],
     programs:   ['tpp-secure','rv-park-n-protect'],
     optOut:     true,
@@ -1170,11 +1193,50 @@ function nameList(names){
       tpp.after(rule, mark);
     };
     probe.src = CLIENT.partnerLogo;
+
+    /* and on the home page, above the welcome, at a size worth looking at.
+       The element is created here rather than sitting empty in the markup, so
+       a link without a partner keeps the page it has always had. */
+    const probe2 = new Image();
+    probe2.onload = () => {
+      const kick = document.getElementById('heroKick');
+      if (!kick || document.querySelector('.partnerbar')) return;
+      const bar = document.createElement('div');
+      bar.className = 'partnerbar';
+      const mark = document.createElement('img');
+      mark.src = CLIENT.partnerLogo;
+      mark.alt = CLIENT.partner || CLIENT.name;
+      const cap = document.createElement('span');
+      cap.className = 'pfor';
+      cap.innerHTML = 'Manager training for<b></b>';
+      cap.querySelector('b').textContent = CLIENT.partner || CLIENT.name;
+      bar.append(mark, cap);
+      kick.before(bar);
+    };
+    probe2.src = CLIENT.partnerLogo;
   }
   if (CLIENT.partner) {
     set('.brandtxt', '<b>Manager Training Portal</b>For ' + CLIENT.partner +
         ' &middot; by Tenant Property Protection');
   }
+
+  /* A partner's colours, applied as a stylesheet added at run time rather than
+     edits to the shared rules — so this reaches their link and nothing else.
+     TPP's own logo, name and credit stay on the page throughout. */
+  if (CLIENT.theme) {
+    const t = CLIENT.theme;
+    const sheet = document.createElement('style');
+    sheet.id = 'partnerTheme';
+    sheet.textContent = `
+      :root{ --navy:${t.dark}; --navy-2:${t.dark2}; --red:${t.red}; --red-dark:${t.redDark}; }
+      .hero{ background:linear-gradient(135deg, ${t.dark} 0%, ${t.dark2} 58%, ${t.mid} 100%); }
+      .hero::after{ background:radial-gradient(circle, ${t.glow}, transparent 68%); }
+      .hero .eyebrow{ color:${t.eyebrow}; }
+      .vnum, .stepn{ background:${t.dark}; }
+    `;
+    document.head.appendChild(sheet);
+  }
+
   set('#claimLines', claimSites(CLIENT.videos).map(r =>
       r.names + ': <a href="https://' + r.site + '" target="_blank" rel="noopener">' + r.site + '</a>'
     ).join('<br>'));
@@ -1183,6 +1245,13 @@ function nameList(names){
       nameList(VIDEOS_SHOWN.map(v => v.title)) + ' training, examples of the documents ' +
       'we’ll prepare for you, and a direct line to your Client Success Manager. ' +
       'One link, one place, no hunting through email.');
+
+  /* A partner's own welcome, last so it wins over the wording above. */
+  if (CLIENT.headline) {
+    const h = document.querySelector('#p-home .hero h1');
+    if (h) h.textContent = CLIENT.headline;
+  }
+  if (CLIENT.lede) set('#heroLede', CLIENT.lede);
 })();
 
 /* The opt-out process, under both courses. */
