@@ -107,8 +107,8 @@ add('05-rates', f"""<img class='brand' src='{LOGO}'>
   <div class='card hi'><div class='amt'>$3,000</div><div class='per'>$15 / month</div><div class='day'>about 50&cent; a day</div></div>
   <div class='card'><div class='amt'>$5,000</div><div class='per'>$25 / month</div><div class='day'>about 83&cent; a day</div></div>
 </div>
-<div class='sub' style='margin-top:40px'>Example levels only &mdash; <b>coverage levels and pricing are flexible</b>
-and we can accommodate most customer needs and requests.</div>""")
+<div class='sub' style='margin-top:40px'>Example levels only &mdash; <b>rates are set for your facility</b>,
+and <b>higher limits are available on request</b>.</div>""")
 
 add('06-present', f"""<img class='brand' src='{LOGO}'>
 <div class='kick'>How to present it</div>
@@ -207,23 +207,24 @@ add('14-claims-timing', f"""<img class='brand' src='{LOGO}'>
 
 add('15-optout', f"""<img class='brand' src='{LOGO}'>
 <div class='kick'>The tenant opt-out process</div>
-<h1>Tenants have <em>10 days</em> from move-in</h1>
+<h1>Tenants have <em>10 business days</em> from move-in</h1>
 <div class='steps'>
   <div class='step'><div class='n'>1</div><p>Tenant submits at <b>myownpolicy.com</b> &mdash; or emails <b>support@myownpolicy.com</b></p></div>
   <div class='step'><div class='n'>2</div><p>Tenant attaches a <b>photo of their declaration page</b></p></div>
   <div class='step'><div class='n'>3</div><p>Our team reviews <b>Monday&ndash;Friday</b> and adds the verified policy</p></div>
 </div>
-<div class='warn'>If 10 days pass with no verified policy, the tenant is <b>automatically enrolled</b> in the protection plan.</div>""")
+<div class='warn'>If 10 business days pass with no verified policy, the tenant is <b>automatically enrolled</b> in the protection plan.</div>""")
 
 add('16-three-details', f"""<img class='brand' src='{LOGO}'>
-<div class='kick'>The photo must show all three</div>
+<div class='kick'>The photo must show all four</div>
 <h1>What we verify on the<br>declaration page</h1>
 <div class='three'>
   <div>The <b>Insurance Carrier</b><br><span style='font-size:26px;color:#cdd6e6'>name as it appears on the policy</span></div>
   <div>The <b>Policy Number</b></div>
   <div>The <b>Expiration Date</b></div>
+  <div>The <b>Tenant on the Lease</b><br><span style='font-size:26px;color:#cdd6e6'>the name on the policy must match</span></div>
 </div>
-<div class='warn'>If any one of the three is missing, cut off or unreadable, the policy <b>cannot be added</b>
+<div class='warn'>If any one of the four is missing, cut off or unreadable, the policy <b>cannot be added</b>
 and the opt-out <b>does not go through</b>.</div>""")
 
 add('17-expiry', f"""<img class='brand' src='{LOGO}'>
@@ -250,10 +251,11 @@ Send your list to Teon Delacruz before launch.</div>""")
 add('19-billing', f"""<img class='brand' src='{LOGO}'>
 <div class='kick'>Opting out later</div>
 <h1>A tenant can opt out<br><em>at any time</em></h1>
-<div class='sub'>The 10 days is the window for avoiding enrollment in the first place &mdash;
+<div class='sub'>The 10 business days is the window for avoiding enrollment in the first place &mdash;
 it is not a cut-off after which they are stuck on the plan.</div>
-<div class='warn' style='margin-top:44px'><b>The plan is not pro-rated.</b> A full month is charged whether the
-tenant is on it for one day or the whole month, and there is no partial refund. Say this plainly at the counter.</div>""")
+<div class='warn' style='margin-top:44px'><b>We do not pro-rate.</b> If a tenant moves out on the 20th, the
+coverage amount is still charged &mdash; whether they stay one day or all month, and there is no partial refund.
+Say this plainly at the counter.</div>""")
 
 add('20-contact', f"""<img class='brand' src='{LOGO}'>
 <img class='photo' src='{AWARD}' style='top:260px;box-shadow:none'>
