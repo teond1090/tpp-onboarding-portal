@@ -28,6 +28,9 @@ header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0
   box-shadow:0 1px 3px rgba(20,30,50,.05)}
 .hbar{display:flex;align-items:center;gap:16px;padding:14px 0}
 .logo{height:46px;width:auto;flex:none}
+/* a partner's mark sits beside the TPP logo, never instead of it */
+.plogo{height:38px}
+.bdiv{width:1px;height:32px;background:var(--line);flex:none;margin:0 3px}
 .brandtxt{font-size:12.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;
   font-weight:700;border-left:1px solid var(--line);padding-left:16px;line-height:1.35}
 .brandtxt b{display:block;color:var(--navy);font-size:14px;letter-spacing:.02em;text-transform:none}
@@ -877,9 +880,12 @@ const PROGRAMS = [
    Deleting a block only removes that one customer's link. Nothing here
    can change what the main portal shows.
 
-     name     – shown in the welcome line on their home page
-     videos   – which courses to show:   pcp | sec | rv
-     programs – which document sets:     portable-container | tpp-secure | rv-park-n-protect
+     name        – shown in the welcome line on their home page
+     videos      – which courses to show:   pcp | sec | rv
+     programs    – which document sets:     portable-container | tpp-secure | rv-park-n-protect
+     partner     – a partner running this training for their own managers
+     partnerLogo – their mark, shown beside the TPP logo, never instead of it.
+                   Leave it out and the header is TPP's alone, as it always was.
    ===================================================================== */
 
 const CLIENTS = {
@@ -888,7 +894,19 @@ const CLIENTS = {
     videos:   ['sec','rv'],
     programs: ['tpp-secure','rv-park-n-protect'],
     optOut:   true,
-    docLib:   'tpp' }
+    docLib:   'tpp' },
+
+  /* Self Storage Consulting Group — their trainer runs their own managers
+     through this. Co-branded: partnerLogo sits beside the TPP mark in the
+     header rather than replacing it. */
+  'sscg': {
+    name:       'Self Storage Consulting Group',
+    partner:    'Self Storage Consulting Group',
+    partnerLogo:'media/partners/self-storage-consulting-group.png',
+    videos:     ['sec','rv'],
+    programs:   ['tpp-secure','rv-park-n-protect'],
+    optOut:     true,
+    docLib:     'tpp' }
 };
 
 /* Per-program wording, used to rebuild the few sentences that name every
@@ -1134,6 +1152,29 @@ function nameList(names){
   /* Name-specific wording only ever runs on a customer link. */
   if (!CLIENT) return;
   set('#heroKick', CLIENT.name);
+
+  /* A partner's logo goes in beside ours, not in place of it — and only once
+     the file has actually loaded, so a missing image leaves the header exactly
+     as it is rather than showing a broken picture. */
+  if (CLIENT.partnerLogo) {
+    const probe = new Image();
+    probe.onload = () => {
+      const bar = document.querySelector('.hbar'),
+            tpp = bar && bar.querySelector('.logo');
+      if (!bar || !tpp) return;
+      const rule = document.createElement('span'); rule.className = 'bdiv';
+      const mark = document.createElement('img');
+      mark.className = 'logo plogo';
+      mark.src = CLIENT.partnerLogo;
+      mark.alt = CLIENT.partner || CLIENT.name;
+      tpp.after(rule, mark);
+    };
+    probe.src = CLIENT.partnerLogo;
+  }
+  if (CLIENT.partner) {
+    set('.brandtxt', '<b>Manager Training Portal</b>For ' + CLIENT.partner +
+        ' &middot; by Tenant Property Protection');
+  }
   set('#claimLines', claimSites(CLIENT.videos).map(r =>
       r.names + ': <a href="https://' + r.site + '" target="_blank" rel="noopener">' + r.site + '</a>'
     ).join('<br>'));
@@ -1564,9 +1605,13 @@ function show(p, push){
   document.getElementById('menubtn').setAttribute('aria-expanded','false');
   if (push && location.hash !== '#'+p) history.pushState(null,'','#'+p);
   window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  /* the partner's name sits between the page and ours, so a tab reads
+     "Training Videos — Self Storage Consulting Group — Tenant Property Protection" */
   document.title = (p==='home' ? 'Customer Training & Onboarding Portal'
     : ({videos:'Training Videos',documents:'Document Examples',faq:'FAQ',support:'Contact Support'})[p]
-      + ' — Training Portal') + ' — Tenant Property Protection';
+      + ' — Training Portal')
+    + (CLIENT && CLIENT.partner ? ' — ' + CLIENT.partner : '')
+    + ' — Tenant Property Protection';
 }
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-p]');
