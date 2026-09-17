@@ -123,11 +123,11 @@ add('06-present', f"""<img class='brand' src='{LOGO}'>
 
 add('07-birdseye', f"""<img class='brand' src='{LOGO}'>
 <img class='photo' src='{BIRD}'>
-<div class='kick'>Plans of $5,000 and above</div>
+<div class='kick'>Plans over $5,000</div>
 <h1>BirdsEye Protection App</h1>
 <div class='sub'>A short application with an <b>inventory list and photos</b>, so underwriters
 have a baseline before anything ever happens.</div>
-<ul><li>Required for <b>all protection plans $5,000 and above</b></li>
+<ul><li>Required for <b>protection plans over $5,000</b> &mdash; the $5,000 plan itself does not need one</li>
 <li>Takes only a few minutes at the counter</li></ul>""")
 
 add('08-covered', f"""<img class='brand' src='{LOGO}'>
