@@ -167,6 +167,26 @@ main.wrap{padding:34px 20px 64px}
   border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg)}
 .vfoot{padding:18px 24px;background:#fafbfd;border-top:1px solid var(--line);
   display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+/* inline player. The poster is a still image; the course itself is about
+   90 MB, so nothing of it is fetched until someone actually presses play —
+   three autoloading videos would cost every visitor a quarter of a gigabyte
+   they never asked for. */
+.vplay{position:relative;aspect-ratio:16/9;background:#0c1b2a;overflow:hidden;
+  border-bottom:1px solid var(--line)}
+.vplay img{width:100%;height:100%;display:block;object-fit:cover}
+.vplay video{width:100%;height:100%;display:block;background:#0c1b2a}
+.vplay .hit{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+  background:transparent;cursor:pointer;display:grid;place-items:center}
+.vplay .pbtn{width:78px;height:78px;border-radius:50%;background:rgba(10,24,38,.8);
+  display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4);
+  transition:transform .18s ease,background .18s ease}
+.vplay .hit:hover .pbtn,.vplay .hit:focus-visible .pbtn{transform:scale(1.07);background:var(--red)}
+.vplay .pbtn svg{width:30px;height:30px;fill:#fff;margin-left:5px}
+.vplay .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 11px;color:#fff;
+  font-size:12.5px;font-weight:700;letter-spacing:.01em;pointer-events:none;
+  background:linear-gradient(transparent,rgba(5,14,24,.85))}
+@media (max-width:600px){.vplay .pbtn{width:60px;height:60px}.vplay .pbtn svg{width:24px;height:24px}}
 /* the whole label is the tap target — keep it at least 44px tall for touch */
 .chk{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:600;
   color:var(--muted);user-select:none;min-height:44px;padding:0 10px 0 4px;border-radius:9px}
@@ -612,10 +632,11 @@ footer a{color:#cdd6e6}
 
   <div class="notice" style="margin-top:22px">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".9" fill="currentColor"/></svg>
-    <p>Each course opens in a new tab. You can pause, rewind and fast-forward freely — the video simply
-       stops at each knowledge check until it&rsquo;s answered. At the end, each person gets a printable
-       <b>completion certificate</b> &mdash; and a one-click button to report their completion to us,
-       so your training record builds itself.</p>
+    <p><b>Press play to watch a course right here.</b> To be certified, open the full course instead:
+       it plays the same video but stops at each knowledge check until the question is answered, and
+       ends with a printable <b>completion certificate</b> and a one-click button to report the
+       completion to us, so your training record builds itself. Either way you can pause, rewind and
+       fast-forward freely.</p>
   </div>
 
   <div id="path"></div>
@@ -746,8 +767,10 @@ const VIDEOS = [
     len:'16 min',
     url:'https://teond1090.github.io/tpp-secure-training/',
     /* the finished video, slides and presenter composited into one file —
-       for anyone who wants a file rather than the interactive course */
+       played inline on this page, and downloadable for anyone who wants
+       the file rather than the interactive course */
     download:'https://teond1090.github.io/tpp-secure-training/media/enhanced/tpp-secure.mp4',
+    poster:'media/posters/tpp-secure.jpg',
     desc:'Our self-storage protection plan. Covers why tenants need it even when they think they’re '
        + 'covered, how to present it without sounding like a sales pitch, and the full claims process.',
     objs:['Why a protection plan is not insurance — and why that wording matters',
@@ -761,6 +784,7 @@ const VIDEOS = [
     len:'17 min',
     url:'https://teond1090.github.io/tpp-rv-parknprotect-training/',
     download:'https://teond1090.github.io/tpp-rv-parknprotect-training/media/enhanced/rv-park-n-protect.mp4',
+    poster:'media/posters/rv-park-n-protect.jpg',
     desc:'Protection for RVs, campers, trailers, boats and vehicles in your spaces — including the '
        + 'off-season coverage gap that catches most owners out, and how contents coverage travels with them.',
     objs:['Why most owners drop collision and comprehensive in the off season',
@@ -1047,6 +1071,7 @@ const ICON_DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const ICON_EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>';
 const ICON_DL  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>';
 const ICON_EXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>';
+const ICON_TRI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>';
 const ICON_PLAY= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3z"/></svg>';
 
 /* ===================== customer link ===================== */
@@ -1293,6 +1318,14 @@ $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
         </div>
       </div>
     </div>
+    ${v.download ? `
+    <div class="vplay">
+      <img src="${v.poster}" alt="" loading="lazy">
+      <button type="button" class="hit" data-src="${v.download}" aria-label="Play the ${v.title} course here">
+        <span class="pbtn">${ICON_TRI}</span>
+      </button>
+      <span class="cap">Plays here &mdash; knowledge checks and the certificate are in the full course</span>
+    </div>` : ''}
     <div class="vbody">
       <h4>What your team will learn</h4>
       <ul class="objl">${v.objs.map(o=>`<li>${o}</li>`).join('')}</ul>
@@ -1302,6 +1335,24 @@ $('#vids').innerHTML = VIDEOS_SHOWN.map((v,i) => `
       ${v.download ? `<a class="mini" href="${v.download}" download>${ICON_DL}Download video</a>` : ''}
     </div>
   </article>`).join('');
+
+/* Press play and the course plays right here on the page. Only the poster is
+   loaded until then. The full course stays a click away for the knowledge
+   checks and the certificate — watching inline does not record a completion,
+   which the caption on the poster says plainly. */
+$('#vids').addEventListener('click', e => {
+  const hit = e.target.closest('.vplay .hit');
+  if (!hit) return;
+  const wrap = hit.parentNode;
+  const v = document.createElement('video');
+  v.src = hit.dataset.src;
+  v.controls = true;
+  v.autoplay = true;
+  v.preload  = 'auto';
+  v.setAttribute('playsinline', '');            /* iOS plays in place rather than going fullscreen */
+  wrap.replaceChildren(v);
+  v.focus({ preventScroll:true });
+});
 
 /* documents — files are listed in documents/manifest.json, which PUBLISH.bat
    regenerates from whatever PDFs are sitting in the documents folders. If the
