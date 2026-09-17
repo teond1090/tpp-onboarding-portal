@@ -92,8 +92,8 @@ add('03-gap', f"""<img class='brand' src='{LOGO}'>
 add('04-fmv', f"""<img class='brand' src='{LOGO}'>
 <img class='photo' src='{COUCH}'>
 <div class='kick'>How claims are valued</div>
-<h1>Claims are processed at<br><em>Fair Market Value</em></h1>
-<div class='sub'>Fair Market Value is what the item is actually worth today.</div>
+<h1>Claims are processed at<br><em>Actual Cash Value</em></h1>
+<div class='sub'>Actual Cash Value is what the item is worth today &mdash; its replacement cost, less depreciation for age and wear.</div>
 <div class='warn'><b>Not the same as Full Replacement Cost.</b> Full Replacement Cost would mean replacing
 an item with a new item of similar quality &mdash; that is a different concept, and not how these claims are processed.</div>
 <ul style='margin-top:34px'><li>Filing a claim <b>never affects a homeowners premium</b></li></ul>""")
