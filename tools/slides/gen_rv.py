@@ -186,27 +186,28 @@ differently. It is not one login per location. If you are not sure how yours is 
 "Manager Portal")
 
 add('13-optout', """<div class='kick'>The tenant opt-out process</div>
-<h1>Tenants have <em>10 days</em><br>from move-in</h1>
+<h1>Tenants have <em>10 business days</em><br>from move-in</h1>
 <div class='rows'>
  <div class='row'><div class='ic'>1</div><div><div class='t'>Submit at myownpolicy.com</div>
    <div class='d'>Or email <b>support@myownpolicy.com</b> if the upload will not work.</div></div></div>
  <div class='row'><div class='ic'>2</div><div><div class='t'>Attach a photo of the declaration page</div>
-   <div class='d'>One readable image showing all three required details.</div></div></div>
+   <div class='d'>One readable image showing all four required details.</div></div></div>
  <div class='row'><div class='ic'>3</div><div><div class='t'>Our team reviews Monday&ndash;Friday</div>
    <div class='d'>Once verified, the policy is added to the tenant&rsquo;s account.</div></div></div>
 </div>
-<div class='flag'>If 10 days pass with no verified policy, the tenant is <b>automatically enrolled</b> in the protection plan.</div>""",
+<div class='flag'>If 10 business days pass with no verified policy, the tenant is <b>automatically enrolled</b> in the protection plan.</div>""",
 "Opt-Out")
 
-add('14-three-details', """<div class='kick'>The photo must show all three</div>
+add('14-three-details', """<div class='kick'>The photo must show all four</div>
 <h1>What we verify on the<br>declaration page</h1>
 <div class='grid'>
- <div class='tile' style='width:400px'><b>The Insurance Carrier</b><span>Name as it appears on the policy</span></div>
- <div class='tile' style='width:400px'><b>The Policy Number</b></div>
- <div class='tile' style='width:400px'><b>The Expiration Date</b></div>
+ <div class='tile' style='flex:0 0 calc((100% - 78px)/4)'><b>The Insurance Carrier</b><span>Name as it appears on the policy</span></div>
+ <div class='tile' style='flex:0 0 calc((100% - 78px)/4)'><b>The Policy Number</b></div>
+ <div class='tile' style='flex:0 0 calc((100% - 78px)/4)'><b>The Expiration Date</b></div>
+ <div class='tile' style='flex:0 0 calc((100% - 78px)/4)'><b>The Tenant on the Lease</b><span>The name on the policy must match</span></div>
 </div>
-<div class='flag'>If any one of the three is missing, cut off or unreadable, the policy <b>cannot be added</b>
-and the opt-out <b>does not go through</b>. The declaration page normally shows all three in one shot.</div>""",
+<div class='flag'>If any one of the four is missing, cut off or unreadable, the policy <b>cannot be added</b>
+and the opt-out <b>does not go through</b>. The declaration page normally shows all of it in one shot.</div>""",
 "Opt-Out")
 
 add('15-expiry', """<div class='kick'>Before a policy lapses</div>
@@ -222,10 +223,10 @@ from <b>myownpolicy.com</b> &mdash; <b>10 days before the policy expires</b>.</d
 
 add('16-billing', """<div class='kick'>Opting out later</div>
 <h1>A tenant can opt out<br><em>at any time</em></h1>
-<div class='lede'>The 10 days is the window for avoiding enrollment in the first place &mdash; not a
+<div class='lede'>The 10 business days is the window for avoiding enrollment in the first place &mdash; not a
 cut-off after which they are stuck on the plan.</div>
-<div class='flag'><b>The plan is not pro-rated.</b> A full month is charged whether the tenant is on it for
-one day or the whole month, and there is no partial refund. Say this plainly at the counter.</div>""",
+<div class='flag'><b>We do not pro-rate.</b> If a tenant moves out on the 20th the coverage amount is still
+charged &mdash; whether they stay one day or all month, and there is no partial refund. Say this plainly at the counter.</div>""",
 "Opt-Out")
 
 add('17-exclusion', """<div class='kick'>Before launch</div>

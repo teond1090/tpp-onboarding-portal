@@ -112,10 +112,10 @@ and <b>higher limits are available on request</b>.</div>""")
 
 add('06-present', f"""<img class='brand' src='{LOGO}'>
 <div class='kick'>How to present it</div>
-<h1>Ask <em>which</em>, not <em>whether</em></h1>
+<h1>Ask <em>what they need</em>,<br>not <em>whether they want it</em></h1>
 <div class='three'>
   <div>&ldquo;Would you like a protection plan?&rdquo;<br><span style='color:#ff9ba3;font-size:28px'>invites a NO</span></div>
-  <div style='background:#B01824'>&ldquo;Which level of protection would you like?&rdquo;<br><span style='font-size:28px'>moves the conversation forward</span></div>
+  <div style='background:#B01824'>&ldquo;What level of coverage do your contents need?&rdquo;<br><span style='font-size:28px'>moves the conversation forward</span></div>
 </div>
 <ul style='margin-top:46px'><li>Name the <b>middle plan first</b> &mdash; room to move either direction</li>
 <li>Frame it <b>daily</b>: nobody argues about 50&cent; a day</li>
