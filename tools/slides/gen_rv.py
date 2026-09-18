@@ -33,7 +33,7 @@ td.fee{color:#15944B;font-weight:800}
 .tile span{font-size:26px;color:#5d6878;line-height:1.3}
 .flag{margin-top:46px;background:#fff5d6;border-left:12px solid #e0b23c;border-radius:14px;
   padding:32px 38px;font-size:32px;color:#1b2330;line-height:1.35}
-.foot{position:absolute;bottom:52px;left:120px;right:640px;display:flex;justify-content:space-between;
+.foot{position:absolute;bottom:52px;left:120px;right:640px;display:flex;
   font-size:24px;color:#9aa5b1;font-weight:700}
 .title-slide{background:linear-gradient(135deg,#0c3b22 0%,#14532d 60%,#15944B 100%)}
 .title-slide h1,.title-slide .kick{color:#fff}
@@ -44,7 +44,12 @@ td.fee{color:#15944B;font-weight:800}
 def page(body, foot, cls=""):
     return (f"<html><head><meta charset='utf-8'><style>{CSS}</style></head><body>"
             f"<div class='slide {cls}'><div class='stage'>{body}</div>"
-            f"<div class='foot'><span>Tenant Property Protection</span><span>{foot}</span></div>"
+            # The section label used to sit at the right end of this rail, which
+            # is exactly where the presenter stands — she covered words like
+            # "The Addendum". Only the company name is kept, at the far left
+            # and well clear of her. `foot` stays in the signature so each
+            # slide still records which section it belongs to.
+            f"<div class='foot'><span>Tenant Property Protection</span></div>"
             f"</div></body></html>")
 
 S=[]
